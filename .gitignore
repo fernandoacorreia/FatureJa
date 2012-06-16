@@ -4,5 +4,6 @@
 *.bak
 bin/
 obj/
+csx/
 TestResults/
 _ReSharper.*/
