@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using FatureJa.Negocio.Infraestrutura;
+using Microsoft.WindowsAzure.StorageClient;
+using Newtonsoft.Json;
 
 namespace FatureJa.Negocio.Administracao
 {
@@ -6,7 +8,14 @@ namespace FatureJa.Negocio.Administracao
     {
         public void SolicitarGeracao(int quantidade)
         {
-            Debug.WriteLine("Solicitar a geração de contratos: " + quantidade);
+            dynamic mensagem = new
+                                   {
+                                       Comando = "GerarContratos",
+                                       Quantidade = quantidade
+                                   };
+            var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
+            CloudQueue cloudQueue = CloudQueueFactory.Create();
+            cloudQueue.AddMessage(message);
         }
     }
 }
