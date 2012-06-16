@@ -1,7 +1,6 @@
+using System;
 using System.Diagnostics;
 using System.Net;
-using System.Threading;
-using FatureJa.Negocio.Mensagens;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace FatureJa.Worker
@@ -13,7 +12,7 @@ namespace FatureJa.Worker
             // This is a sample worker implementation. Replace with your logic.
             Trace.WriteLine("$projectname$ entry point called", "Information");
 
-            LoopPrincipal.Executar();
+            LoopPrincipal.Executar(TimeSpan.FromSeconds(10));
         }
 
         public override bool OnStart()

@@ -1,4 +1,5 @@
-﻿using FatureJa.Worker;
+﻿using System;
+using FatureJa.Worker;
 
 namespace FatureJa.DevelopmentWorker
 {
@@ -6,7 +7,7 @@ namespace FatureJa.DevelopmentWorker
     {
         private static void Main(string[] args)
         {
-            LoopPrincipal.Executar();
+            LoopPrincipal.Executar(TimeSpan.FromSeconds(3));
         }
     }
 }
