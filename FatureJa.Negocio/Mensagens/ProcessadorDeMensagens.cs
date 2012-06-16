@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using FatureJa.Negocio.Administracao;
 using FatureJa.Negocio.Infraestrutura;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
@@ -13,7 +14,7 @@ namespace FatureJa.Negocio.Mensagens
             TimeSpan visibilityTimeout = TimeSpan.FromSeconds(60);
             const int limiteDeTentativas = 3; // número máximo de tentativas de processamento da mesma mensagem
 
-            Trace.WriteLine("Processando mensagens na fila.", "Information");
+            Trace.WriteLine("Processando mensagens da fila.", "Information");
             CloudQueue cloudQueue = CloudQueueFactory.Create();
             while (true) // repetir enquanto houver mensagens na fila
             {
@@ -45,8 +46,7 @@ namespace FatureJa.Negocio.Mensagens
                             ProcessarMensagem(mensagemDeserializada);
                         }
                     }
-                    //cloudQueue.DeleteMessage(mensagem);
-                    // TODO
+                    cloudQueue.DeleteMessage(mensagem);
                 }
                 catch (Exception ex)
                 {
@@ -61,7 +61,11 @@ namespace FatureJa.Negocio.Mensagens
             string comando = mensagem.Comando;
             if (comando == "GerarContratos")
             {
-                Trace.WriteLine("Gerando contratos.", "Information");
+                new GeradorDeContratos().GerarContratos(mensagem);
+            }
+            else if (comando == "GerarGrupoDeContratos")
+            {
+                new GeradorDeContratos().GerarGrupoDeContratos(mensagem);
             }
             else
             {
