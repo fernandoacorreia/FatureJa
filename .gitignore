@@ -1,0 +1,8 @@
+*.suo
+*.cache
+*.user
+*.bak
+bin/
+obj/
+TestResults/
+_ReSharper.*/
