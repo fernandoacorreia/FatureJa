@@ -2,12 +2,14 @@
 
 namespace FatureJa.Web.Controllers
 {
-    public class HomeController : Controller
+    public class AdministracaoController : Controller
     {
+        //
+        // GET: /Administracao/
+
+        [Authorize(Roles = "Administrador")]
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to kick-start your ASP.NET MVC application.";
-
             return View();
         }
     }
