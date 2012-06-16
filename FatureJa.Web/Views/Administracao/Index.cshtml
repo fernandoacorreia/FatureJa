@@ -1,4 +1,6 @@
-﻿@{
+﻿@model FatureJa.Web.Models.GeracaoModel
+
+@{
     ViewBag.Title = "Administração";
 }
 
@@ -7,4 +9,23 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<p>Este comando gera uma massa de dados para demonstração da aplicação.</p>
+<p>Use este formulário para gerar dados de contatos para demonstração.</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>Geração de Contratos</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.QuantidadeContratos)
+                @Html.TextBoxFor(m => m.QuantidadeContratos)
+            </li>
+        </ol>
+        <input type="submit" value="Gerar contratos" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

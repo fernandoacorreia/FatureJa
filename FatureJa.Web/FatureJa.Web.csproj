@@ -134,6 +134,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AdministracaoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +233,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Faturamento\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FatureJa.Negocio\FatureJa.Negocio.csproj">
+      <Project>{0E73CD27-499F-4C8F-BB77-211999CF36C4}</Project>
+      <Name>FatureJa.Negocio</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Administracao\GeracaoSolicitada.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
