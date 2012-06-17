@@ -74,6 +74,10 @@ namespace FatureJa.Negocio.Mensagens
             {
                 new ProcessadorDeGerarMovimentoParaGrupoDeContratos().Processar(mensagem);
             }
+            else if (comando == "Faturar")
+            {
+                new ProcessadorDeFaturamento().Processar(mensagem);
+            }
             else
             {
                 Trace.WriteLine(String.Format("O comando '{0}' não foi reconhecido.", comando), "Error");

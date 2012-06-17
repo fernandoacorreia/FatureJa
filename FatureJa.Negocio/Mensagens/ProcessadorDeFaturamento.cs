@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace FatureJa.Negocio.Mensagens
 {
-    public class ProcessadorDeGerarMovimento
+    public class ProcessadorDeFaturamento
     {
         public void Processar(dynamic mensagem)
         {
@@ -31,13 +31,13 @@ namespace FatureJa.Negocio.Mensagens
                 return;
             }
 
-            GerarMovimento(ano, mes, primeiroContrato, ultimoContrato);
+            Faturar(ano, mes, primeiroContrato, ultimoContrato);
         }
 
-        private void GerarMovimento(int ano, int mes, int primeiroContrato, int ultimoContrato)
+        private void Faturar(int ano, int mes, int primeiroContrato, int ultimoContrato)
         {
             Trace.WriteLine(
-                String.Format("Gerando movimento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
+                String.Format("Gerando faturamento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
                               ultimoContrato), "Information");
 
             int grupoDoPrimeiroContrato = Contrato.ObterGrupo(primeiroContrato);
@@ -58,20 +58,20 @@ namespace FatureJa.Negocio.Mensagens
                 {
                     fim = ultimoContrato;
                 }
-                SolicitarGeracaoDeMovimentoParaGrupo(ano, mes, inicio, fim, grupo);
+                SolicitarFaturamentoParaGrupo(ano, mes, inicio, fim, grupo);
                 grupo += 1;
                 inicio = fim + 1;
             }
         }
 
-        private void SolicitarGeracaoDeMovimentoParaGrupo(int ano, int mes, int inicio, int fim, int grupo)
+        private void SolicitarFaturamentoParaGrupo(int ano, int mes, int inicio, int fim, int grupo)
         {
             Trace.WriteLine(
-                String.Format("Solicitando geração de movimento para {0}/{1} dos contratos de {2} a {3} no grupo {4}.",
+                String.Format("Solicitando faturamento para {0}/{1} dos contratos de {2} a {3} no grupo {4}.",
                               mes, ano, inicio, fim, grupo), "Information");
             dynamic mensagem = new
                                    {
-                                       Comando = "GerarMovimentoParaGrupoDeContratos",
+                                       Comando = "FaturarGrupoDeContratos",
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,
