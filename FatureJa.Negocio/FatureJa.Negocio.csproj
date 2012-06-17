@@ -46,10 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Armazenamento\TabelaDeItensDeContratos.cs" />
+    <Compile Include="Armazenamento\TabelaDeMovimento.cs" />
     <Compile Include="Entidades\ItemDeContrato.cs" />
+    <Compile Include="Entidades\Movimento.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarMovimento.cs" />
+    <Compile Include="Mensagens\ProcessadorDeGerarMovimentoParaGrupoDeContratos.cs" />
     <Compile Include="Servicos\GeradorDeMovimento.cs" />
     <Compile Include="Servicos\GeradorDeContratos.cs" />
     <Compile Include="Armazenamento\TabelaDeContratos.cs" />

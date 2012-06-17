@@ -11,7 +11,7 @@ namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeGerarGrupoDeContratos
     {
-        public void GerarGrupoDeContratos(dynamic mensagem)
+        public void Processar(dynamic mensagem)
         {
             int inicio = mensagem.Inicio;
             if (inicio < 1)
@@ -34,9 +34,14 @@ namespace FatureJa.Negocio.Mensagens
             int grupo = mensagem.Grupo;
             if (grupo < 0)
             {
-                throw new ArgumentException("O grupo deve ser no mínimo 0.", "mensagem");
+                throw new ArgumentException("O grupo deve ser maior ou igual a 0.", "mensagem");
             }
 
+            GerarGrupoDeContratos(inicio, fim, grupo);
+        }
+
+        private static void GerarGrupoDeContratos(int inicio, int fim, int grupo)
+        {
             Trace.WriteLine(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
                             "Information");
 
@@ -97,8 +102,8 @@ namespace FatureJa.Negocio.Mensagens
             {
                 var item = new ItemDeContrato
                                {
-                                   PartitionKey = Contrato.ObterPartitionKey(numero),
-                                   RowKey = Contrato.ObterRowKey(numero) + "-" + atual.ToString().PadLeft(10, '0'),
+                                   PartitionKey = ItemDeContrato.ObterPartitionKey(numero),
+                                   RowKey = ItemDeContrato.ObterRowKey(numero, atual),
                                    Produto = GeradorDeNomesDeProdutos.GerarNomeContratado(),
                                    Valor = random.Next(100, 10000)
                                };

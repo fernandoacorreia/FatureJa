@@ -16,6 +16,7 @@ namespace FatureJa.Web
             FilaDeMensagens.Inicializar();
             TabelaDeContratos.Inicializar();
             TabelaDeItensDeContratos.Inicializar();
+            TabelaDeMovimento.Inicializar();
 
             AreaRegistration.RegisterAllAreas();
 

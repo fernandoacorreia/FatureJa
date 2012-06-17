@@ -32,11 +32,31 @@ namespace FatureJa.Negocio.Util
 
         #endregion
 
+        #region Produtos de Movimento
+
+        private static readonly string[] _nomeProdutosMovimento = new[]
+                                                                      {
+                                                                          "Horas de consultoria",
+                                                                          "Horas de desenvolvimento",
+                                                                          "Horas de treinamento",
+                                                                          "Horas de implantação",
+                                                                          "Evento de suporte",
+                                                                          "Licença de uso complementar"
+                                                                      };
+
+        #endregion
+
         private static readonly Random _random = new Random();
 
         public static string GerarNomeContratado()
         {
             string nome = _nomeProdutosContratados[_random.Next(0, _nomeProdutosContratados.Length)];
+            return nome;
+        }
+
+        internal static string GerarNomeMovimento()
+        {
+            string nome = _nomeProdutosMovimento[_random.Next(0, _nomeProdutosMovimento.Length)];
             return nome;
         }
     }

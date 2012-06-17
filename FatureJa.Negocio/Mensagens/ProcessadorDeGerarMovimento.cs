@@ -9,7 +9,7 @@ namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeGerarMovimento
     {
-        public void GerarMovimento(dynamic mensagem)
+        public void Processar(dynamic mensagem)
         {
             int ano = mensagem.Ano;
             if (ano < 2012 || ano > 2999)
@@ -31,6 +31,11 @@ namespace FatureJa.Negocio.Mensagens
                 return;
             }
 
+            GerarMovimento(ultimoContrato, ano, mes, primeiroContrato);
+        }
+
+        private void GerarMovimento(int ultimoContrato, int ano, int mes, int primeiroContrato)
+        {
             Trace.WriteLine(
                 String.Format("Gerando movimento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
                               ultimoContrato), "Information");
@@ -71,8 +76,7 @@ namespace FatureJa.Negocio.Mensagens
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,
-                                       Fim = fim,
-                                       Grupo = grupo
+                                       Fim = fim
                                    };
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
             CloudQueue cloudQueue = FilaDeMensagens.GetCloudQueue();

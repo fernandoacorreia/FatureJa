@@ -9,7 +9,7 @@ namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeGerarContratos
     {
-        public void GerarContratos(dynamic mensagem)
+        public void Processar(dynamic mensagem)
         {
             int quantidade = mensagem.Quantidade;
             if (quantidade < 1)
@@ -23,6 +23,11 @@ namespace FatureJa.Negocio.Mensagens
                     "mensagem");
             }
 
+            GerarContratos(quantidade);
+        }
+
+        private void GerarContratos(int quantidade)
+        {
             Trace.WriteLine(string.Format("Gerando {0} contratos.", quantidade), "Information");
 
             int numeroDoUltimoContrato = TabelaDeContratos.ObterNumeroDoUltimoContrato();

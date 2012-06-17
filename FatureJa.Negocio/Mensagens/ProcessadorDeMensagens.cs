@@ -60,15 +60,19 @@ namespace FatureJa.Negocio.Mensagens
             string comando = mensagem.Comando;
             if (comando == "GerarContratos")
             {
-                new ProcessadorDeGerarContratos().GerarContratos(mensagem);
+                new ProcessadorDeGerarContratos().Processar(mensagem);
             }
             else if (comando == "GerarGrupoDeContratos")
             {
-                new ProcessadorDeGerarGrupoDeContratos().GerarGrupoDeContratos(mensagem);
+                new ProcessadorDeGerarGrupoDeContratos().Processar(mensagem);
             }
             else if (comando =="GerarMovimento")
             {
-                new ProcessadorDeGerarMovimento().GerarMovimento(mensagem);
+                new ProcessadorDeGerarMovimento().Processar(mensagem);
+            }
+            else if (comando == "GerarMovimentoParaGrupoDeContratos")
+            {
+                new ProcessadorDeGerarMovimentoParaGrupoDeContratos().Processar(mensagem);
             }
             else
             {
