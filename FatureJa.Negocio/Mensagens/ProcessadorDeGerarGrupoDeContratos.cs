@@ -3,6 +3,7 @@ using System.Data.Services.Client;
 using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Entidades;
+using FatureJa.Negocio.Util;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
@@ -25,7 +26,7 @@ namespace FatureJa.Negocio.Mensagens
             if (fim > Contrato.NumeroMaximoDeContrato)
             {
                 throw new ArgumentException(
-                    String.Format("O fim deve ser menor do que {0}.", Contrato.NumeroMaximoDeContrato),
+                    String.Format("O fim deve ser menor ou igual a {0}.", Contrato.NumeroMaximoDeContrato),
                     "mensagem");
             }
 
@@ -44,12 +45,7 @@ namespace FatureJa.Negocio.Mensagens
             int quantidadeNoLote = 0;
             for (int atual = inicio; atual <= fim; atual++)
             {
-                var contrato = new Contrato
-                                   {
-                                       PartitionKey = Contrato.ObterPartitionKey(atual),
-                                       RowKey = Contrato.ObterRowKey(atual),
-                                       Numero = atual
-                                   };
+                var contrato = NovoContrato(atual);
                 serviceContext.AddObject("contratos", contrato);
                 quantidadeNoLote += 1;
                 if (quantidadeNoLote == 100)
@@ -60,6 +56,25 @@ namespace FatureJa.Negocio.Mensagens
                 }
             }
             serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
+        }
+
+        private static Contrato NovoContrato(int atual)
+        {
+            string municipio;
+            string uf;
+            GeradorDeMunicipios.GerarMunicipioEUf(out municipio, out uf);
+
+            var contrato = new Contrato
+                               {
+                                   PartitionKey = Contrato.ObterPartitionKey(atual),
+                                   RowKey = Contrato.ObterRowKey(atual),
+                                   Numero = atual,
+                                   RazaoSocialDoCliente = GeradorDeNomesDeEmpresas.GerarNome(),
+                                   CnpjDoCliente = GeradorDeCnpjs.GerarCnpj(),
+                                   MunicipioDoCliente = municipio,
+                                   UfDoCliente = uf
+                               };
+            return contrato;
         }
     }
 }

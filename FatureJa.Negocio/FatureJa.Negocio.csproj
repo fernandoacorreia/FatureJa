@@ -55,6 +55,9 @@
     <Compile Include="Infraestrutura\CloudTableClientFactory.cs" />
     <Compile Include="Mensagens\ProcessadorDeMensagens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\GeradorDeCnpjs.cs" />
+    <Compile Include="Util\GeradorDeMunicipios.cs" />
+    <Compile Include="Util\GeradorDeNomesDeEmpresas.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
