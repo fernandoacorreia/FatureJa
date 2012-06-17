@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using FatureJa.Negocio.Administracao;
+using FatureJa.Negocio.Servicos;
 using FatureJa.Web.Models;
 
 namespace FatureJa.Web.Controllers

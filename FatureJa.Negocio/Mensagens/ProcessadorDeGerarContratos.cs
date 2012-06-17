@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using FatureJa.Negocio.Infraestrutura;
+using FatureJa.Negocio.Armazenamento;
+using FatureJa.Negocio.Entidades;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
-namespace FatureJa.Negocio.Administracao
+namespace FatureJa.Negocio.Mensagens
 {
-    public class GeradorDeContratos
+    public class ProcessadorDeGerarContratos
     {
-        public void SolicitarGeracao(int quantidade)
-        {
-            dynamic mensagem = new
-                                   {
-                                       Comando = "GerarContratos",
-                                       Quantidade = quantidade
-                                   };
-            var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
-            CloudQueue cloudQueue = CloudQueueFactory.Create();
-            cloudQueue.AddMessage(message);
-        }
-
         public void GerarContratos(dynamic mensagem)
         {
             int quantidade = mensagem.Quantidade;
@@ -27,13 +16,28 @@ namespace FatureJa.Negocio.Administracao
             {
                 throw new ArgumentException("A quantidade deve ser no mínimo 1.", "mensagem");
             }
+            if (quantidade > Contrato.NumeroMaximoDeContrato)
+            {
+                throw new ArgumentException(
+                    String.Format("A quantidade deve ser menor do que {0}.", Contrato.NumeroMaximoDeContrato),
+                    "mensagem");
+            }
+
             Trace.WriteLine(string.Format("Gerando {0} contratos.", quantidade), "Information");
 
             int numeroDoUltimoContrato = ObterNumeroDoUltimoContrato();
             int numeroDoPrimeiroContratoAGerar = numeroDoUltimoContrato + 1;
             int numeroDoUltimoContratoAGerar = numeroDoPrimeiroContratoAGerar + quantidade - 1;
-            int grupoDoPrimeiroContratoAGerar = ObterGrupo(numeroDoPrimeiroContratoAGerar);
-            int grupoDoUltimoContratoAGerar = ObterGrupo(numeroDoUltimoContratoAGerar);
+
+            if (numeroDoUltimoContratoAGerar > Contrato.NumeroMaximoDeContrato)
+            {
+                throw new ArgumentException(
+                    String.Format("O número do último contrato a gerar deve ser menor do que {0}.",
+                                  Contrato.NumeroMaximoDeContrato), "mensagem");
+            }
+
+            int grupoDoPrimeiroContratoAGerar = Contrato.ObterGrupo(numeroDoPrimeiroContratoAGerar);
+            int grupoDoUltimoContratoAGerar = Contrato.ObterGrupo(numeroDoUltimoContratoAGerar);
 
             int inicio = numeroDoPrimeiroContratoAGerar;
             int grupo = grupoDoPrimeiroContratoAGerar;
@@ -56,39 +60,9 @@ namespace FatureJa.Negocio.Administracao
             }
         }
 
-        public void GerarGrupoDeContratos(dynamic mensagem)
-        {
-            int inicio = mensagem.Inicio;
-            if (inicio < 1)
-            {
-                throw new ArgumentException("O início deve ser no mínimo 1.", "mensagem");
-            }
-
-            int fim = mensagem.Fim;
-            if (fim < inicio)
-            {
-                throw new ArgumentException("O fim deve ser maior ou igual ao início.", "mensagem");
-            }
-
-            int grupo = mensagem.Grupo;
-            if (grupo < 0)
-            {
-                throw new ArgumentException("O grupo deve ser no mínimo 0.", "mensagem");
-            }
-
-            Trace.WriteLine(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
-                            "Information");
-        }
-
         private int ObterNumeroDoUltimoContrato()
         {
             return 0; // TODO
-        }
-
-        private int ObterGrupo(int numeroDoContrato)
-        {
-            int grupo = (numeroDoContrato - 1)/1000;
-            return grupo;
         }
 
         private void SolicitarGeracaoDeGrupo(int inicio, int fim, int grupo)
@@ -104,7 +78,7 @@ namespace FatureJa.Negocio.Administracao
                                        Grupo = grupo
                                    };
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
-            CloudQueue cloudQueue = CloudQueueFactory.Create();
+            CloudQueue cloudQueue = FilaDeMensagensFactory.GetCloudQueue();
             cloudQueue.AddMessage(message);
         }
     }

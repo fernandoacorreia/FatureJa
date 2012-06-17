@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using FatureJa.Negocio.Infraestrutura;
+using FatureJa.Negocio.Armazenamento;
 
 namespace FatureJa.Web
 {
@@ -13,7 +13,8 @@ namespace FatureJa.Web
     {
         protected void Application_Start()
         {
-            new InicializadorDeStorage().Inicializar();
+            FilaDeMensagensFactory.Inicializar();
+            TabelaDeContratosFactory.Inicializar();
 
             AreaRegistration.RegisterAllAreas();
 

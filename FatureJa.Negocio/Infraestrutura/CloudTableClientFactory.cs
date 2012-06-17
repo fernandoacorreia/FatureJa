@@ -3,21 +3,18 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Infraestrutura
 {
-    internal static class CloudQueueFactory
+    internal class CloudTableClientFactory
     {
-        public static CloudQueue GetCloudQueue(string nome)
+        public static CloudTableClient GetCloudTableClient()
         {
             // Retrieve storage account from connection-string
             string connectionString = "UseDevelopmentStorage=true"; // TODO
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
 
-            // Create the queue client
-            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+            // Create the table client
+            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
-            // Retrieve a reference to a queue
-            CloudQueue queue = queueClient.GetQueueReference(nome);
-
-            return queue;
+            return tableClient;
         }
     }
 }

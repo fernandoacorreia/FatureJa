@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,9 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administracao\GeradorDeContratos.cs" />
+    <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
+    <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
+    <Compile Include="Servicos\GeradorDeContratos.cs" />
+    <Compile Include="Armazenamento\TabelaDeContratos.cs" />
+    <Compile Include="Entidades\Contrato.cs" />
     <Compile Include="Infraestrutura\CloudQueueFactory.cs" />
-    <Compile Include="Infraestrutura\InicializadorDeStorage.cs" />
+    <Compile Include="Armazenamento\FilaDeMensagens.cs" />
+    <Compile Include="Infraestrutura\CloudTableClientFactory.cs" />
     <Compile Include="Mensagens\ProcessadorDeMensagens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
