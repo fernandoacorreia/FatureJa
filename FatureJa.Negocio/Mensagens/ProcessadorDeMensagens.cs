@@ -14,7 +14,7 @@ namespace FatureJa.Negocio.Mensagens
             const int limiteDeTentativas = 3; // número máximo de tentativas de processamento da mesma mensagem
 
             Trace.WriteLine("Processando mensagens da fila.", "Information");
-            CloudQueue cloudQueue = FilaDeMensagensFactory.GetCloudQueue();
+            CloudQueue cloudQueue = FilaDeMensagens.GetCloudQueue();
             while (true) // repetir enquanto houver mensagens na fila
             {
                 CloudQueueMessage mensagem = cloudQueue.GetMessage(visibilityTimeout);

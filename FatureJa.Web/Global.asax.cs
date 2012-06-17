@@ -13,8 +13,9 @@ namespace FatureJa.Web
     {
         protected void Application_Start()
         {
-            FilaDeMensagensFactory.Inicializar();
-            TabelaDeContratosFactory.Inicializar();
+            FilaDeMensagens.Inicializar();
+            TabelaDeContratos.Inicializar();
+            TabelaDeItensDeContratos.Inicializar();
 
             AreaRegistration.RegisterAllAreas();
 

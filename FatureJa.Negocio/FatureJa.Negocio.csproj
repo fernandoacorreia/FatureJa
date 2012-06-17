@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Armazenamento\TabelaDeItensDeContratos.cs" />
+    <Compile Include="Entidades\ItemDeContrato.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
     <Compile Include="Servicos\GeradorDeContratos.cs" />
@@ -58,6 +60,7 @@
     <Compile Include="Util\GeradorDeCnpjs.cs" />
     <Compile Include="Util\GeradorDeMunicipios.cs" />
     <Compile Include="Util\GeradorDeNomesDeEmpresas.cs" />
+    <Compile Include="Util\GeradorDeNomesDeProdutos.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

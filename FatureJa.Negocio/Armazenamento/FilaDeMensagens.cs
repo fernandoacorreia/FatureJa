@@ -3,7 +3,7 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Armazenamento
 {
-    public static class FilaDeMensagensFactory
+    public static class FilaDeMensagens
     {
         public const string Nome = "mensagens";
 

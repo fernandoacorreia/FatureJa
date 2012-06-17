@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Services.Client;
 using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
@@ -39,26 +40,36 @@ namespace FatureJa.Negocio.Mensagens
             Trace.WriteLine(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
                             "Information");
 
-            CloudTableClient tableClient = TabelaDeContratosFactory.GetCloudTableClient();
-            TableServiceContext serviceContext = tableClient.GetDataServiceContext();
+            CloudTableClient clienteContratos = TabelaDeContratos.GetCloudTableClient();
+            TableServiceContext contextoContratos = clienteContratos.GetDataServiceContext();
+
+            CloudTableClient clienteItensDeContratos = TabelaDeItensDeContratos.GetCloudTableClient();
 
             int quantidadeNoLote = 0;
             for (int atual = inicio; atual <= fim; atual++)
             {
-                var contrato = NovoContrato(atual);
-                serviceContext.AddObject("contratos", contrato);
+                // incluir contratos
+                Contrato contrato = NovoContrato(atual);
+                contextoContratos.AddObject(TabelaDeContratos.Nome, contrato);
                 quantidadeNoLote += 1;
-                if (quantidadeNoLote == 100)
+                if (quantidadeNoLote == 100 || atual == fim)
                 {
-                    serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
-                    serviceContext = tableClient.GetDataServiceContext();
+                    contextoContratos.SaveChangesWithRetries(SaveChangesOptions.Batch);
+                    contextoContratos = clienteContratos.GetDataServiceContext();
                     quantidadeNoLote = 0;
                 }
+
+                // incluir itens de contrato
+                TableServiceContext contextoItensDeContratos = clienteItensDeContratos.GetDataServiceContext();
+                foreach (ItemDeContrato item in NovosItensDeContrato(atual))
+                {
+                    contextoItensDeContratos.AddObject(TabelaDeItensDeContratos.Nome, item);
+                }
+                contextoItensDeContratos.SaveChangesWithRetries(SaveChangesOptions.Batch);
             }
-            serviceContext.SaveChangesWithRetries(SaveChangesOptions.Batch);
         }
 
-        private static Contrato NovoContrato(int atual)
+        private static Contrato NovoContrato(int numero)
         {
             string municipio;
             string uf;
@@ -66,15 +77,34 @@ namespace FatureJa.Negocio.Mensagens
 
             var contrato = new Contrato
                                {
-                                   PartitionKey = Contrato.ObterPartitionKey(atual),
-                                   RowKey = Contrato.ObterRowKey(atual),
-                                   Numero = atual,
+                                   PartitionKey = Contrato.ObterPartitionKey(numero),
+                                   RowKey = Contrato.ObterRowKey(numero),
+                                   Numero = numero,
                                    RazaoSocialDoCliente = GeradorDeNomesDeEmpresas.GerarNome(),
                                    CnpjDoCliente = GeradorDeCnpjs.GerarCnpj(),
                                    MunicipioDoCliente = municipio,
                                    UfDoCliente = uf
                                };
             return contrato;
+        }
+
+        private static IEnumerable<ItemDeContrato> NovosItensDeContrato(int numero)
+        {
+            var random = new Random();
+            var lista = new List<ItemDeContrato>();
+            int quantidade = random.Next(1, 10 + 1);
+            for (int atual = 1; atual <= quantidade; atual++)
+            {
+                var item = new ItemDeContrato
+                               {
+                                   PartitionKey = Contrato.ObterPartitionKey(numero),
+                                   RowKey = Contrato.ObterRowKey(numero) + "-" + atual.ToString().PadLeft(10, '0'),
+                                   Produto = GeradorDeNomesDeProdutos.GerarNomeContratado(),
+                                   Valor = random.Next(100, 10000)
+                               };
+                lista.Add(item);
+            }
+            return lista;
         }
     }
 }

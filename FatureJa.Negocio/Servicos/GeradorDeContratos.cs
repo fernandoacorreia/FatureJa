@@ -14,7 +14,7 @@ namespace FatureJa.Negocio.Servicos
                                        Quantidade = quantidade
                                    };
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
-            CloudQueue cloudQueue = FilaDeMensagensFactory.GetCloudQueue();
+            CloudQueue cloudQueue = FilaDeMensagens.GetCloudQueue();
             cloudQueue.AddMessage(message);
         }
     }
