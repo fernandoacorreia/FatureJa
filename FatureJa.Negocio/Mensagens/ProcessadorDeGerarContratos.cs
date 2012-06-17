@@ -25,7 +25,7 @@ namespace FatureJa.Negocio.Mensagens
 
             Trace.WriteLine(string.Format("Gerando {0} contratos.", quantidade), "Information");
 
-            int numeroDoUltimoContrato = ObterNumeroDoUltimoContrato();
+            int numeroDoUltimoContrato = TabelaDeContratos.ObterNumeroDoUltimoContrato();
             int numeroDoPrimeiroContratoAGerar = numeroDoUltimoContrato + 1;
             int numeroDoUltimoContratoAGerar = numeroDoPrimeiroContratoAGerar + quantidade - 1;
 
@@ -58,11 +58,6 @@ namespace FatureJa.Negocio.Mensagens
                 grupo += 1;
                 inicio = fim + 1;
             }
-        }
-
-        private int ObterNumeroDoUltimoContrato()
-        {
-            return 0; // TODO
         }
 
         private void SolicitarGeracaoDeGrupo(int inicio, int fim, int grupo)

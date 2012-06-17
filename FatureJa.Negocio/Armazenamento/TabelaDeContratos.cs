@@ -1,4 +1,6 @@
-﻿using FatureJa.Negocio.Infraestrutura;
+﻿using System.Linq;
+using FatureJa.Negocio.Entidades;
+using FatureJa.Negocio.Infraestrutura;
 using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Armazenamento
@@ -17,6 +19,20 @@ namespace FatureJa.Negocio.Armazenamento
         public static CloudTableClient GetCloudTableClient()
         {
             return CloudTableClientFactory.GetCloudTableClient();
+        }
+
+        public static int ObterNumeroDoUltimoContrato()
+        {
+            CloudTableClient tableClient = GetCloudTableClient();
+            TableServiceContext serviceContext = tableClient.GetDataServiceContext();
+            Contrato contrato =
+                (from e in serviceContext.CreateQuery<Contrato>(Nome)
+                 select e).FirstOrDefault();
+            if (contrato == null)
+            {
+                return 0;
+            }
+            return contrato.Numero;
         }
     }
 }
