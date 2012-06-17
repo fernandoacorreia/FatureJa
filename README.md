@@ -6,6 +6,9 @@ Exemplo de processamento paralelo com Windows Azure.
 Autor: Fernando Correia
 
 
+PROJETO EM DESENVOLVIMENTO
+
+
 Ferramentas e bibliotecas utilizadas
 ------------------------------------
 
