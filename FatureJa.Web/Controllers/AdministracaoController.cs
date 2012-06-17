@@ -16,16 +16,53 @@ namespace FatureJa.Web.Controllers
         }
 
         //
-        // POST: /Administracao/
+        // GET: /Administracao/GerarContratos/
+
+        [Authorize(Roles = "Administrador")]
+        public ActionResult GerarContratos()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Administracao/GerarContratos/
 
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public ActionResult Index(GeracaoModel model)
+        public ActionResult GerarContratos(GeracaoDeContratosModel model)
         {
             try
             {
                 var gerador = new GeradorDeContratos();
                 gerador.SolicitarGeracao(model.QuantidadeContratos);
+                return RedirectToAction("GeracaoSolicitada");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        //
+        // GET: /Administracao/GerarMovimento/
+
+        [Authorize(Roles = "Administrador")]
+        public ActionResult GerarMovimento()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Administracao/GerarMovimento/
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        public ActionResult GerarMovimento(GeracaoDeMovimentoModel model)
+        {
+            try
+            {
+                var gerador = new GeradorDeMovimento();
+                gerador.SolicitarGeracao(model.Ano, model.Mes);
                 return RedirectToAction("GeracaoSolicitada");
             }
             catch

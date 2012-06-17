@@ -49,6 +49,7 @@
     <Compile Include="Entidades\ItemDeContrato.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
+    <Compile Include="Servicos\GeradorDeMovimento.cs" />
     <Compile Include="Servicos\GeradorDeContratos.cs" />
     <Compile Include="Armazenamento\TabelaDeContratos.cs" />
     <Compile Include="Entidades\Contrato.cs" />

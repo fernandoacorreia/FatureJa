@@ -1,0 +1,35 @@
+﻿@model FatureJa.Web.Models.GeracaoDeMovimentoModel
+
+@{
+    ViewBag.Title = "Gerar Movimento";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<p>Use este formulário para gerar movimento para um período.</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>Geração de Contratos</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Ano)
+                @Html.TextBoxFor(m => m.Ano)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Mes)
+                @Html.TextBoxFor(m => m.Mes)
+            </li>
+        </ol>
+        <input type="submit" value="Gerar movimento" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
