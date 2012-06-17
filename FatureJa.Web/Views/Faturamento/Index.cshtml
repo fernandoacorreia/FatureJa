@@ -1,4 +1,6 @@
-﻿@{
+﻿@model FatureJa.Web.Models.SolicitacaoDeFaturamentoModel
+
+@{
     ViewBag.Title = "Faturamento";
 }
 
@@ -7,4 +9,27 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<p>Gerar faturas usando processamento paralelo.</p>
+<p>Use este formulário para faturar todos os contratos.</p>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>Faturamento</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Ano)
+                @Html.TextBoxFor(m => m.Ano)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Mes)
+                @Html.TextBoxFor(m => m.Mes)
+            </li>
+        </ol>
+        <input type="submit" value="Faturar" />
+    </fieldset>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
