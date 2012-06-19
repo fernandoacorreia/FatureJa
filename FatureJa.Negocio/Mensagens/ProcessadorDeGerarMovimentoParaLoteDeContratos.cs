@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
-    public class ProcessadorDeGerarMovimentoParaGrupoDeContratos
+    public class ProcessadorDeGerarMovimentoParaLoteDeContratos
     {
         public void Processar(dynamic mensagem)
         {
@@ -43,10 +43,10 @@ namespace FatureJa.Negocio.Mensagens
                     "mensagem");
             }
 
-            GerarMovimentoParaGrupoDeContratos(ano, mes, inicio, fim);
+            GerarMovimentoParaLoteDeContratos(ano, mes, inicio, fim);
         }
 
-        private static void GerarMovimentoParaGrupoDeContratos(int ano, int mes, int inicio, int fim)
+        private static void GerarMovimentoParaLoteDeContratos(int ano, int mes, int inicio, int fim)
         {
             Trace.WriteLine(
                 String.Format("Gerando movimento para {0}/{1} dos contratos de {2} a {3}.", mes, ano,

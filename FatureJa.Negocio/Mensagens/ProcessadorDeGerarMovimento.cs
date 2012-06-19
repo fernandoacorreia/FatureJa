@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Entidades;
+using FatureJa.Negocio.Servicos;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
@@ -9,6 +10,8 @@ namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeGerarMovimento
     {
+        private const int _quantidadeMaximaPorLote = 100;
+
         public void Processar(dynamic mensagem)
         {
             int ano = mensagem.Ano;
@@ -23,15 +26,41 @@ namespace FatureJa.Negocio.Mensagens
                 throw new ArgumentException("O mês está fora da faixa suportada.", "mensagem");
             }
 
-            int primeiroContrato = 1;
-            int ultimoContrato = TabelaDeContratos.ObterNumeroDoUltimoContrato();
-            if (ultimoContrato == 0)
+            int primeiro = mensagem.Primeiro;
+            if (primeiro < 1)
             {
-                Trace.WriteLine("Não há nenhum contrato.", "Error");
-                return;
+                throw new ArgumentException("O número do primeiro contrato deve ser no mínimo 1.", "mensagem");
             }
 
-            GerarMovimento(ano, mes, primeiroContrato, ultimoContrato);
+            int ultimo = mensagem.Ultimo;
+            if (ultimo < primeiro)
+            {
+                throw new ArgumentException("O número do último contrato deve ser maior ou igual ao primeiro.",
+                                            "mensagem");
+            }
+            if (ultimo > Contrato.NumeroMaximoDeContrato)
+            {
+                throw new ArgumentException(
+                    String.Format("O número do último contrato deve ser menor do que {0}.",
+                                  Contrato.NumeroMaximoDeContrato),
+                    "mensagem");
+            }
+
+            int quantidade = ultimo - primeiro + 1;
+            if (quantidade > _quantidadeMaximaPorLote)
+            {
+                Trace.WriteLine(
+                    String.Format("Subdividindo solicitação de geração de movimento para {0}/{1} para os contratos {2} a {3}.", mes, ano, primeiro, ultimo),
+                    "Information");
+                int meio = (ultimo - primeiro) / 2 + primeiro;
+                var gerador = new GeradorDeMovimento();
+                gerador.SolicitarGeracao(ano, mes, primeiro, meio);
+                gerador.SolicitarGeracao(ano, mes, meio + 1, ultimo);
+            }
+            else
+            {
+                GerarMovimento(ano, mes, primeiro, ultimo);
+            }
         }
 
         private void GerarMovimento(int ano, int mes, int primeiroContrato, int ultimoContrato)
@@ -71,7 +100,7 @@ namespace FatureJa.Negocio.Mensagens
                               mes, ano, inicio, fim, grupo), "Information");
             dynamic mensagem = new
                                    {
-                                       Comando = "GerarMovimentoParaGrupoDeContratos",
+                                       Comando = "GerarMovimentoParaLoteDeContratos",
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,

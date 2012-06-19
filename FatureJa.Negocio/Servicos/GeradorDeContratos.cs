@@ -1,4 +1,5 @@
-﻿using FatureJa.Negocio.Armazenamento;
+﻿using System.Diagnostics;
+using FatureJa.Negocio.Armazenamento;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
@@ -13,6 +14,7 @@ namespace FatureJa.Negocio.Servicos
 
         public void SolicitarGeracao(int primeiro, int ultimo)
         {
+            Trace.TraceInformation(string.Format("Solicitando geração dos contratos {0} a {1}.", primeiro, ultimo));
             dynamic mensagem = new
                                    {
                                        Comando = "GerarContratos",
