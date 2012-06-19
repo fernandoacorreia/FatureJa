@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using FatureJa.Negocio.Armazenamento;
 
 namespace FatureJa.Web.Controllers
 {
@@ -8,6 +10,14 @@ namespace FatureJa.Web.Controllers
         // GET: /Acompanhamento/
 
         public ActionResult Index()
+        {
+            var repositorio = new RepositorioDeProcessamentos();
+            var processamentos = repositorio.ObterUltimosProcessamentos();
+            ViewBag.Processamentos = processamentos;
+            return View();
+        }
+
+        public ActionResult Eventos(Guid processamentoId)
         {
             return View();
         }

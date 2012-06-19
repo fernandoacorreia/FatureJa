@@ -27,8 +27,9 @@ namespace FatureJa.Negocio.Servicos
         {
             var processamento = new Processamento
             {
-                PartitionKey = Processamento.ObterPartitionKey(processamentoId),
+                PartitionKey = Processamento.ObterPartitionKey(),
                 RowKey = Processamento.ObterRowKey(),
+                ProcessamentoId = processamentoId,
                 Comando = "GerarMovimento",
                 Inicio = DateTime.UtcNow,
                 Parametros = String.Format("Ano={0}; Mes={1}", ano, mes)

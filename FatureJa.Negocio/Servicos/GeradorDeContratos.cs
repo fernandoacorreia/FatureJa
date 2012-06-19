@@ -20,8 +20,9 @@ namespace FatureJa.Negocio.Servicos
         {
             var processamento = new Processamento
                                     {
-                                        PartitionKey = Processamento.ObterPartitionKey(processamentoId),
+                                        PartitionKey = Processamento.ObterPartitionKey(),
                                         RowKey = Processamento.ObterRowKey(),
+                                        ProcessamentoId = processamentoId,
                                         Comando = "GerarContratos",
                                         Inicio = DateTime.UtcNow,
                                         Parametros = String.Format("Quantidade={0}", quantidade)

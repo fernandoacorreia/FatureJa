@@ -11,14 +11,19 @@ namespace FatureJa.Negocio.Entidades
 
         public string Parametros { get; set; }
 
-        public static string ObterPartitionKey(Guid processamentoId)
+        public Guid ProcessamentoId { get; set; }
+
+        public static string ObterPartitionKey()
         {
-            return processamentoId.ToString();
+            return DateTime.UtcNow.ToString("yyyyMM");
         }
 
         public static string ObterRowKey()
         {
-            return String.Empty;
+            long ticksInicio = DateTime.UtcNow.Ticks;
+            long ticksInvertidos = long.MaxValue - ticksInicio;
+            string ticksFormatados = ticksInvertidos.ToString().PadLeft(20, '0');
+            return ticksFormatados;
         }
     }
 }

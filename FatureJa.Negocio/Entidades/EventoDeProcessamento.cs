@@ -15,7 +15,7 @@ namespace FatureJa.Negocio.Entidades
 
         public static string ObterPartitionKey(Guid processamentoId)
         {
-            return Processamento.ObterPartitionKey(processamentoId);
+            return processamentoId.ToString();
         }
 
         public static string ObterRowKey(DateTime inicio)

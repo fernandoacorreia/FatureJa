@@ -4,7 +4,22 @@
 
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>
-    <h2>@ViewBag.Message</h2>
+    <h2>Últimos processamentos</h2>
 </hgroup>
 
-<p>Acompanhar andamento do processo.</p>
+<table>
+    @foreach (var processamento in ViewBag.Processamentos)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(((DateTime)processamento.Inicio).ToString(), "Eventos", "Acompanhamento", new { processamentoId = processamento.ProcessamentoId }, null)
+            </td>
+            <td>
+                @processamento.Comando
+            </td>
+            <td>
+                @processamento.Parametros
+            </td>
+        </tr>
+    }
+</table>

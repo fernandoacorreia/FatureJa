@@ -1,4 +1,14 @@
-﻿Salvar registro de processamentos
+﻿Consulta de processamentos
+
+Consulta de eventos de processamento
+
+Se possível com gráfico de progresso
+
+Refactor: Converter tabelas em repositórios com classe base.
+
+Definir a retry policy do TableServiceContext
+
+Documentar estrutura
 
 Configurar para funcionar no Azure
 
@@ -13,13 +23,8 @@ Otimizar:
     http://social.technet.microsoft.com/Forums/en-US/windowsazuredata/thread/d84ba34b-b0e0-4961-a167-bbe7618beb83
   
     Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
+    
+    Usar ResolveType para aumentar velocidade das consultas.
+        http://windowsclient.net/blogs/anshulee/archive/2010/05/27/best-practices-for-ado-net-dataservices-when-using-azure-table-storage.aspx
+        http://shatzicode.wordpress.com/2011/07/13/azure-table-storage-before-you-start/
 
-Converter tabelas em repositórios com classe base.
-
-Definir a retry policy do TableServiceContext
-
-Consulta de processamentos
-
-Consulta de eventos de processamento
-
-Documentar estrutura
