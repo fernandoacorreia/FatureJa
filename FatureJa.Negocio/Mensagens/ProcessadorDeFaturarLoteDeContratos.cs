@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
-    public class ProcessadorDeFaturarGrupoDeContratos
+    public class ProcessadorDeFaturarLoteDeContratos
     {
         private readonly CloudTableClient _clienteContratos = TabelaDeContratos.GetCloudTableClient();
         private readonly CloudTableClient _clienteFaturas = TabelaDeFaturas.GetCloudTableClient();
@@ -59,10 +59,10 @@ namespace FatureJa.Negocio.Mensagens
                 throw new ArgumentException("Os contratos devem ser de um mesmo grupo.", "mensagem");
             }
 
-            FaturarGrupoDeContratos(ano, mes, inicio, fim, grupo);
+            FaturarLoteDeContratos(ano, mes, inicio, fim, grupo);
         }
 
-        private void FaturarGrupoDeContratos(int ano, int mes, int inicio, int fim, int grupo)
+        private void FaturarLoteDeContratos(int ano, int mes, int inicio, int fim, int grupo)
         {
             Trace.WriteLine(
                 String.Format("Gerando faturamento para {0}/{1} do contrato {2} até {3} do grupo {4}.", mes, ano, inicio,

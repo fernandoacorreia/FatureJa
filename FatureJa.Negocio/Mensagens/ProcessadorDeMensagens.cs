@@ -78,9 +78,9 @@ namespace FatureJa.Negocio.Mensagens
             {
                 new ProcessadorDeFaturar().Processar(mensagem);
             }
-            else if (comando == "FaturarGrupoDeContratos")
+            else if (comando == "FaturarLoteDeContratos")
             {
-                new ProcessadorDeFaturarGrupoDeContratos().Processar(mensagem);
+                new ProcessadorDeFaturarLoteDeContratos().Processar(mensagem);
             }
             else
             {

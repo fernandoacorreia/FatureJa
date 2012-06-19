@@ -1,10 +1,14 @@
-﻿Número de fatura sequencial
-
-Divisão binária dos comandos, até um tamanho mínimo E contratos de um mesmo grupo.
-
-Salvar log para acompanhar andamento
+﻿Salvar log para acompanhar andamento
   - processo (guid, data/hora de início, descrição) - ex. faturamento 05/2012
   - log pro processo (data/hora, quantidade) - ex. 1000 faturas
+  
+  -> Talvez salvar só o trace em uma table storage já seja suficiente
+  
+Mudar TRACE
+
+TODO: SÉRIE, NÚMERO DA FATURA
+
+THREADS / HPC
 
 Otimizar:
 
@@ -20,4 +24,4 @@ Otimizar:
 
 Definir a retry policy do TableServiceContext
     
-Documentar métodos
+Documentar estrutura
