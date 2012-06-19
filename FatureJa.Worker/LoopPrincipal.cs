@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Mensagens;
 
 namespace FatureJa.Worker
@@ -9,6 +10,8 @@ namespace FatureJa.Worker
     {
         public static void Executar(TimeSpan intervalo)
         {
+            InicializadorDeArmazenamento.Inicializar();
+
             var processador = new ProcessadorDeMensagens();
             while (true)
             {

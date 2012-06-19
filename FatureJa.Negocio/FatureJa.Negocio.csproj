@@ -45,11 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Armazenamento\InicializadorDeArmazenamento.cs" />
+    <Compile Include="Armazenamento\TabelaDeFaturas.cs" />
     <Compile Include="Armazenamento\TabelaDeItensDeContratos.cs" />
+    <Compile Include="Armazenamento\TabelaDeItensDeFaturas.cs" />
     <Compile Include="Armazenamento\TabelaDeMovimento.cs" />
+    <Compile Include="Entidades\Fatura.cs" />
     <Compile Include="Entidades\ItemDeContrato.cs" />
+    <Compile Include="Entidades\ItemDeFatura.cs" />
     <Compile Include="Entidades\Movimento.cs" />
-    <Compile Include="Mensagens\ProcessadorDeFaturamento.cs" />
+    <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
+    <Compile Include="Mensagens\ProcessadorDeFaturarGrupoDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarMovimento.cs" />

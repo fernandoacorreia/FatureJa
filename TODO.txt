@@ -1,0 +1,23 @@
+Número de fatura sequencial
+
+Gerar Faturamento
+
+Salvar log para acompanhar andamento
+  - processo (guid, data/hora de início, descrição) - ex. faturamento 05/2012
+  - log pro processo (data/hora, quantidade) - ex. 1000 faturas
+
+Otimizar:
+
+    https://www.windowsazure.com/en-us/develop/net/how-to-guides/table-services/#retrieve-all-entities
+
+    http://blogs.msdn.com/b/windowsazurestorage/archive/2010/06/25/nagle-s-algorithm-is-not-friendly-towards-small-requests.aspx
+
+    http://social.technet.microsoft.com/Forums/en-US/windowsazuredata/thread/d84ba34b-b0e0-4961-a167-bbe7618beb83
+  
+    Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
+
+    Criar classe base para tabelas de storage e reutilizar métodos comuns
+
+Definir a retry policy do TableServiceContext
+    
+Documentar métodos

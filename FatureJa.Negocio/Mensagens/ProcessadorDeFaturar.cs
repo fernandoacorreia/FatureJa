@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace FatureJa.Negocio.Mensagens
 {
-    public class ProcessadorDeFaturamento
+    public class ProcessadorDeFaturar
     {
         public void Processar(dynamic mensagem)
         {
@@ -75,7 +75,8 @@ namespace FatureJa.Negocio.Mensagens
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,
-                                       Fim = fim
+                                       Fim = fim,
+                                       Grupo = grupo
                                    };
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
             CloudQueue cloudQueue = FilaDeMensagens.GetCloudQueue();
