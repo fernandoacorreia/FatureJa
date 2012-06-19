@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
-    public class ProcessadorDeGerarGrupoDeContratos
+    public class ProcessadorDeGerarLoteDeContratos
     {
         public void Processar(dynamic mensagem)
         {
@@ -37,10 +37,10 @@ namespace FatureJa.Negocio.Mensagens
                 throw new ArgumentException("O grupo deve ser maior ou igual a 0.", "mensagem");
             }
 
-            GerarGrupoDeContratos(inicio, fim, grupo);
+            GerarLoteDeContratos(inicio, fim, grupo);
         }
 
-        private static void GerarGrupoDeContratos(int inicio, int fim, int grupo)
+        private static void GerarLoteDeContratos(int inicio, int fim, int grupo)
         {
             Trace.WriteLine(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
                             "Information");

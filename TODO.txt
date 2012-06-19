@@ -1,9 +1,9 @@
-N˙mero de fatura sequencial
+ÔªøN√∫mero de fatura sequencial
 
-Gerar Faturamento
+Divis√£o bin√°ria dos comandos, at√© um tamanho m√≠nimo E contratos de um mesmo grupo.
 
 Salvar log para acompanhar andamento
-  - processo (guid, data/hora de inÌcio, descriÁ„o) - ex. faturamento 05/2012
+  - processo (guid, data/hora de in√≠cio, descri√ß√£o) - ex. faturamento 05/2012
   - log pro processo (data/hora, quantidade) - ex. 1000 faturas
 
 Otimizar:
@@ -14,10 +14,10 @@ Otimizar:
 
     http://social.technet.microsoft.com/Forums/en-US/windowsazuredata/thread/d84ba34b-b0e0-4961-a167-bbe7618beb83
   
-    Otimizar faturamento: ler todos contratos de um grupo de uma sÛ vez.
+    Otimizar faturamento: ler todos contratos de um grupo de uma s√≥ vez.
 
-    Criar classe base para tabelas de storage e reutilizar mÈtodos comuns
+    Criar classe base para tabelas de storage e reutilizar m√©todos comuns
 
 Definir a retry policy do TableServiceContext
     
-Documentar mÈtodos
+Documentar m√©todos

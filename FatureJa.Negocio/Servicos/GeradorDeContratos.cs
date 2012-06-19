@@ -8,10 +8,16 @@ namespace FatureJa.Negocio.Servicos
     {
         public void SolicitarGeracao(int quantidade)
         {
+            SolicitarGeracao(1, quantidade);
+        }
+
+        public void SolicitarGeracao(int primeiro, int ultimo)
+        {
             dynamic mensagem = new
                                    {
                                        Comando = "GerarContratos",
-                                       Quantidade = quantidade
+                                       Primeiro = primeiro,
+                                       Ultimo = ultimo
                                    };
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(mensagem));
             CloudQueue cloudQueue = FilaDeMensagens.GetCloudQueue();

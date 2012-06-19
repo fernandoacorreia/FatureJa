@@ -57,7 +57,7 @@
     <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturarGrupoDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />
-    <Compile Include="Mensagens\ProcessadorDeGerarGrupoDeContratos.cs" />
+    <Compile Include="Mensagens\ProcessadorDeGerarLoteDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarMovimento.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarMovimentoParaGrupoDeContratos.cs" />
     <Compile Include="Servicos\FaturamentoDeContratos.cs" />

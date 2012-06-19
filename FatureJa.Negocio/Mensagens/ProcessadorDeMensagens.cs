@@ -62,9 +62,9 @@ namespace FatureJa.Negocio.Mensagens
             {
                 new ProcessadorDeGerarContratos().Processar(mensagem);
             }
-            else if (comando == "GerarGrupoDeContratos")
+            else if (comando == "GerarLoteDeContratos")
             {
-                new ProcessadorDeGerarGrupoDeContratos().Processar(mensagem);
+                new ProcessadorDeGerarLoteDeContratos().Processar(mensagem);
             }
             else if (comando =="GerarMovimento")
             {
