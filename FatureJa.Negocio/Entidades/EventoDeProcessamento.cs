@@ -11,7 +11,7 @@ namespace FatureJa.Negocio.Entidades
 
         public string Comando { get; set; }
 
-        public int Operacoes { get; set; }
+        public int Quantidade { get; set; }
 
         public static string ObterPartitionKey(Guid processamentoId)
         {

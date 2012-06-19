@@ -8,11 +8,22 @@
 </hgroup>
 
 <table>
-    @foreach (var processamento in ViewBag.Processamentos)
+    <tr>
+        <th>
+            Início
+        </th>
+        <th>
+            Comando
+        </th>
+        <th>
+            Parâmetros
+        </th>
+    </tr>
+    @foreach (dynamic processamento in ViewBag.Processamentos)
     {
         <tr>
             <td>
-                @Html.ActionLink(((DateTime)processamento.Inicio).ToString(), "Eventos", "Acompanhamento", new { processamentoId = processamento.ProcessamentoId }, null)
+                @Html.ActionLink(((DateTime) processamento.Inicio).ToString(), "Eventos", "Acompanhamento", new {processamentoId = processamento.ProcessamentoId}, null)
             </td>
             <td>
                 @processamento.Comando

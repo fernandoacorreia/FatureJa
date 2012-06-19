@@ -12,12 +12,12 @@ namespace FatureJa.Negocio.Armazenamento
             Nome = "Processamentos";
         }
 
-        public IEnumerable<Processamento> ObterUltimosProcessamentos()
+        public IEnumerable<Processamento> ObterUltimosProcessamentos(int take)
         {
             TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
             CloudTableQuery<Processamento> query =
                 (from e in serviceContext.CreateQuery<Processamento>(Nome)
-                 select e).Take(10).AsTableServiceQuery<Processamento>();
+                 select e).Take(take).AsTableServiceQuery();
             return query.ToList();
         }
     }

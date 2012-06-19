@@ -12,13 +12,16 @@ namespace FatureJa.Web.Controllers
         public ActionResult Index()
         {
             var repositorio = new RepositorioDeProcessamentos();
-            var processamentos = repositorio.ObterUltimosProcessamentos();
+            var processamentos = repositorio.ObterUltimosProcessamentos(20);
             ViewBag.Processamentos = processamentos;
             return View();
         }
 
         public ActionResult Eventos(Guid processamentoId)
         {
+            var repositorio = new RepositorioDeEventosDeProcessamento();
+            var eventos = repositorio.ObterUltimosEventos(processamentoId, 20);
+            ViewBag.Eventos = eventos;
             return View();
         }
     }

@@ -82,7 +82,7 @@ namespace FatureJa.Negocio.Mensagens
                 Comando = "FaturarLoteDeContratos",
                 Inicio = dataHoraInicio,
                 Termino = DateTime.UtcNow,
-                Operacoes = fim - inicio + 1
+                Quantidade = fim - inicio + 1
             });
         }
 

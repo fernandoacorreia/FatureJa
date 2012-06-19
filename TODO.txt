@@ -28,3 +28,6 @@ Otimizar:
         http://windowsclient.net/blogs/anshulee/archive/2010/05/27/best-practices-for-ado-net-dataservices-when-using-azure-table-storage.aspx
         http://shatzicode.wordpress.com/2011/07/13/azure-table-storage-before-you-start/
 
+Logotipo
+
+Link para projeto no rodapé de copyright
