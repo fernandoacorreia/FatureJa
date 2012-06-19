@@ -54,6 +54,7 @@
     <Compile Include="Entidades\ItemDeContrato.cs" />
     <Compile Include="Entidades\ItemDeFatura.cs" />
     <Compile Include="Entidades\Movimento.cs" />
+    <Compile Include="Mensagens\DespachanteDeMensagem.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturarLoteDeContratos.cs" />
     <Compile Include="Mensagens\ProcessadorDeGerarContratos.cs" />

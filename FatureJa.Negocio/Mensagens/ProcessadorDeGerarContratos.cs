@@ -53,7 +53,7 @@ namespace FatureJa.Negocio.Mensagens
 
         private void SolicitarGeracaoDeLote(int primeiro, int ultimo)
         {
-            Trace.WriteLine(string.Format("Gerando lote de contratos {0} a {1}.", primeiro, ultimo), "Information");
+            Trace.WriteLine(string.Format("Solicitando geração de contratos de {0} a {1}.", primeiro, ultimo), "Information");
 
             int grupoDoPrimeiroContrato = Contrato.ObterGrupo(primeiro);
             int grupoDoUltimoContrato = Contrato.ObterGrupo(ultimo);

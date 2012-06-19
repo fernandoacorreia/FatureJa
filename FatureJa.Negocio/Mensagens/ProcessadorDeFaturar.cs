@@ -66,7 +66,7 @@ namespace FatureJa.Negocio.Mensagens
         private void Faturar(int ano, int mes, int primeiroContrato, int ultimoContrato)
         {
             Trace.WriteLine(
-                String.Format("Gerando faturamento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
+                String.Format("Solicitando faturamento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
                               ultimoContrato), "Information");
 
             int grupoDoPrimeiroContrato = Contrato.ObterGrupo(primeiroContrato);
