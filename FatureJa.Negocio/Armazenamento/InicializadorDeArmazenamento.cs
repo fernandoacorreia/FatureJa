@@ -10,6 +10,7 @@
             TabelaDeMovimento.Inicializar();
             TabelaDeFaturas.Inicializar();
             TabelaDeItensDeFaturas.Inicializar();
+            new RepositorioDeProcessamentos().Inicializar();
         }
     }
 }

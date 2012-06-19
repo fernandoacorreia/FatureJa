@@ -34,6 +34,12 @@ namespace FatureJa.Negocio.Mensagens
                     "mensagem");
             }
 
+            Guid processamentoId = mensagem.ProcessamentoId;
+            if (processamentoId == Guid.Empty)
+            {
+                throw new ArgumentException("O identificador do processamento não foi encontrado.", "mensagem");
+            }
+
             int quantidade = ultimo - primeiro + 1;
             if (quantidade > _quantidadeMaximaPorLote)
             {
@@ -42,8 +48,8 @@ namespace FatureJa.Negocio.Mensagens
                     "Information");
                 int meio = (ultimo - primeiro)/2 + primeiro;
                 var gerador = new GeradorDeContratos();
-                gerador.SolicitarGeracao(primeiro, meio);
-                gerador.SolicitarGeracao(meio + 1, ultimo);
+                gerador.SolicitarGeracao(processamentoId, primeiro, meio);
+                gerador.SolicitarGeracao(processamentoId, meio + 1, ultimo);
             }
             else
             {

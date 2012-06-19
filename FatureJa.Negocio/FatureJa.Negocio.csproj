@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Armazenamento\InicializadorDeArmazenamento.cs" />
+    <Compile Include="Armazenamento\RepositorioDeProcessamentos.cs" />
     <Compile Include="Armazenamento\TabelaDeFaturas.cs" />
     <Compile Include="Armazenamento\TabelaDeItensDeContratos.cs" />
     <Compile Include="Armazenamento\TabelaDeItensDeFaturas.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Entidades\ItemDeContrato.cs" />
     <Compile Include="Entidades\ItemDeFatura.cs" />
     <Compile Include="Entidades\Movimento.cs" />
+    <Compile Include="Entidades\Processamento.cs" />
     <Compile Include="Mensagens\DespachanteDeMensagem.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturarLoteDeContratos.cs" />

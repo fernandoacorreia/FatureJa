@@ -1,14 +1,8 @@
-﻿Salvar log para acompanhar andamento
-  - processo (guid, data/hora de início, descrição) - ex. faturamento 05/2012
-  - log pro processo (data/hora, quantidade) - ex. 1000 faturas
-  
-  -> Talvez salvar só o trace em uma table storage já seja suficiente
-  
-Mudar TRACE
+﻿Salvar registro de processamentos
+
+Configurar para funcionar no Azure
 
 TODO: SÉRIE, NÚMERO DA FATURA
-
-THREADS / HPC
 
 Otimizar:
 
@@ -20,8 +14,12 @@ Otimizar:
   
     Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
 
-    Criar classe base para tabelas de storage e reutilizar métodos comuns
+Converter tabelas em repositórios com classe base.
 
 Definir a retry policy do TableServiceContext
-    
+
+Consulta de processamentos
+
+Consulta de eventos de processamento
+
 Documentar estrutura

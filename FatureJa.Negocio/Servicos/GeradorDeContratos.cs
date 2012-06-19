@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
+using FatureJa.Negocio.Entidades;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
@@ -9,15 +11,31 @@ namespace FatureJa.Negocio.Servicos
     {
         public void SolicitarGeracao(int quantidade)
         {
-            SolicitarGeracao(1, quantidade);
+            Guid processamentoId = Guid.NewGuid();
+            RegistrarProcessamento(processamentoId, quantidade);
+            SolicitarGeracao(processamentoId, 1, quantidade);
         }
 
-        public void SolicitarGeracao(int primeiro, int ultimo)
+        private void RegistrarProcessamento(Guid processamentoId, int quantidade)
+        {
+            var processamento = new Processamento
+                                    {
+                                        PartitionKey = Processamento.ObterPartitionKey(processamentoId),
+                                        RowKey = Processamento.ObterRowKey(),
+                                        Comando = "GerarContratos",
+                                        Inicio = DateTime.UtcNow,
+                                        Parametros = String.Format("Quantidade={0}", quantidade)
+                                    };
+            new RepositorioDeProcessamentos().Incluir(processamento);
+        }
+
+        public void SolicitarGeracao(Guid processamentoId, int primeiro, int ultimo)
         {
             Trace.TraceInformation(string.Format("Solicitando geração dos contratos {0} a {1}.", primeiro, ultimo));
             dynamic mensagem = new
                                    {
                                        Comando = "GerarContratos",
+                                       ProcessamentoId = processamentoId,
                                        Primeiro = primeiro,
                                        Ultimo = ultimo
                                    };
