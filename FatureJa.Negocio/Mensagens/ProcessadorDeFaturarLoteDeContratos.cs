@@ -13,8 +13,8 @@ namespace FatureJa.Negocio.Mensagens
     {
         private readonly CloudTableClient _clienteContratos = TabelaDeContratos.GetCloudTableClient();
         private readonly CloudTableClient _clienteFaturas = TabelaDeFaturas.GetCloudTableClient();
-        private readonly CloudTableClient _clienteItensDeContratos = TabelaDeItensDeContratos.GetCloudTableClient();
-        private readonly CloudTableClient _clienteItensDeFaturas = TabelaDeItensDeFaturas.GetCloudTableClient();
+        private readonly CloudTableClient _clienteItensDeContrato = TabelaDeItensDeContrato.GetCloudTableClient();
+        private readonly CloudTableClient _clienteItensDeFatura = TabelaDeItensDeFatura.GetCloudTableClient();
         private readonly CloudTableClient _clienteMovimento = TabelaDeMovimento.GetCloudTableClient();
 
         public void Processar(dynamic mensagem)
@@ -59,7 +59,31 @@ namespace FatureJa.Negocio.Mensagens
                 throw new ArgumentException("Os contratos devem ser de um mesmo grupo.", "mensagem");
             }
 
+            Guid processamentoId = mensagem.ProcessamentoId;
+            if (processamentoId == Guid.Empty)
+            {
+                throw new ArgumentException("O identificador do processamento não foi encontrado.", "mensagem");
+            }
+
+            DateTime dataHoraInicio = DateTime.UtcNow;
+
             FaturarLoteDeContratos(ano, mes, inicio, fim, grupo);
+
+            RegistrarEvento(processamentoId, inicio, fim, dataHoraInicio);
+        }
+
+        private static void RegistrarEvento(Guid processamentoId, int inicio, int fim, DateTime dataHoraInicio)
+        {
+            var repositorio = new RepositorioDeEventosDeProcessamento();
+            repositorio.Incluir(new EventoDeProcessamento
+            {
+                PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
+                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio),
+                Comando = "FaturarLoteDeContratos",
+                Inicio = dataHoraInicio,
+                Termino = DateTime.UtcNow,
+                Operacoes = fim - inicio + 1
+            });
         }
 
         private void FaturarLoteDeContratos(int ano, int mes, int inicio, int fim, int grupo)
@@ -100,14 +124,14 @@ namespace FatureJa.Negocio.Mensagens
 
         private IEnumerable<ItemDeContrato> ObterItensDoContrato(int atual)
         {
-            TableServiceContext serviceContext = _clienteItensDeContratos.GetDataServiceContext();
+            TableServiceContext serviceContext = _clienteItensDeContrato.GetDataServiceContext();
 
             string partitionKey = Contrato.ObterPartitionKey(atual);
             string rowKeyInicial = ItemDeContrato.ObterRowKey(atual, 0);
             string rowKeyFinal = ItemDeContrato.ObterRowKey(atual, int.MaxValue);
 
             CloudTableQuery<ItemDeContrato> query =
-                (from e in serviceContext.CreateQuery<ItemDeContrato>(TabelaDeItensDeContratos.Nome)
+                (from e in serviceContext.CreateQuery<ItemDeContrato>(TabelaDeItensDeContrato.Nome)
                  where
                      e.PartitionKey == partitionKey &&
                      e.RowKey.CompareTo(rowKeyInicial) >= 0 &&
@@ -143,7 +167,7 @@ namespace FatureJa.Negocio.Mensagens
             int TODO_NUMERO_FATURA = contrato.Numero;
             int numeroItemDeFatura = 0;
             double valorTotal = 0;
-            TableServiceContext contextoItensDeFaturas = _clienteItensDeFaturas.GetDataServiceContext();
+            TableServiceContext contextoItensDeFatura = _clienteItensDeFatura.GetDataServiceContext();
             TableServiceContext contextoDeFaturas = _clienteFaturas.GetDataServiceContext();
 
             // incluir itens de contrato
@@ -162,7 +186,7 @@ namespace FatureJa.Negocio.Mensagens
                                            ValorTotal = itemDeContrato.Valor
                                        };
                 valorTotal += itemDeFatura.ValorTotal;
-                contextoItensDeFaturas.AddObject(TabelaDeItensDeFaturas.Nome, itemDeFatura);
+                contextoItensDeFatura.AddObject(TabelaDeItensDeFatura.Nome, itemDeFatura);
             }
 
             // incluir itens de movimento
@@ -181,7 +205,7 @@ namespace FatureJa.Negocio.Mensagens
                                            ValorTotal = movimento.ValorTotal
                                        };
                 valorTotal += itemDeFatura.ValorTotal;
-                contextoItensDeFaturas.AddObject(TabelaDeItensDeFaturas.Nome, itemDeFatura);
+                contextoItensDeFatura.AddObject(TabelaDeItensDeFatura.Nome, itemDeFatura);
             }
 
             // incluir registro mestre da fatura
@@ -200,7 +224,7 @@ namespace FatureJa.Negocio.Mensagens
             contextoDeFaturas.AddObject(TabelaDeFaturas.Nome, fatura);
 
             // salvar
-            contextoItensDeFaturas.SaveChangesWithRetries(SaveChangesOptions.Batch);
+            contextoItensDeFatura.SaveChangesWithRetries(SaveChangesOptions.Batch);
             contextoDeFaturas.SaveChangesWithRetries(SaveChangesOptions.Batch);
         }
     }

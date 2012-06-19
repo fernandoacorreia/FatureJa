@@ -3,9 +3,9 @@ using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Armazenamento
 {
-    public class TabelaDeItensDeFaturas
+    public class TabelaDeItensDeFatura
     {
-        public const string Nome = "ItensDeFaturas";
+        public const string Nome = "ItensDeFatura";
 
         public static void Inicializar()
         {

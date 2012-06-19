@@ -8,8 +8,7 @@ namespace FatureJa.Negocio.Infraestrutura
         public static CloudQueue GetCloudQueue(string nome)
         {
             // Retrieve storage account from connection-string
-            string connectionString = "UseDevelopmentStorage=true"; // TODO
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
+            CloudStorageAccount storageAccount = CloudStorageAccountFactory.ObterCloudStorageAccount();
 
             // Create the queue client
             CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();

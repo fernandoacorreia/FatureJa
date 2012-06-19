@@ -65,11 +65,11 @@ namespace FatureJa.Negocio.Mensagens
             }
             else
             {
-                GerarMovimento(ano, mes, primeiro, ultimo);
+                GerarMovimento(processamentoId, ano, mes, primeiro, ultimo);
             }
         }
 
-        private void GerarMovimento(int ano, int mes, int primeiroContrato, int ultimoContrato)
+        private void GerarMovimento(Guid processamentoId, int ano, int mes, int primeiroContrato, int ultimoContrato)
         {
             Trace.WriteLine(
                 String.Format("Gerando movimento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
@@ -93,13 +93,13 @@ namespace FatureJa.Negocio.Mensagens
                 {
                     fim = ultimoContrato;
                 }
-                SolicitarGeracaoDeMovimentoParaGrupo(ano, mes, inicio, fim, grupo);
+                SolicitarGeracaoDeMovimentoParaGrupo(processamentoId, ano, mes, inicio, fim, grupo);
                 grupo += 1;
                 inicio = fim + 1;
             }
         }
 
-        private void SolicitarGeracaoDeMovimentoParaGrupo(int ano, int mes, int inicio, int fim, int grupo)
+        private void SolicitarGeracaoDeMovimentoParaGrupo(Guid processamentoId, int ano, int mes, int inicio, int fim, int grupo)
         {
             Trace.WriteLine(
                 String.Format("Solicitando geração de movimento para {0}/{1} dos contratos de {2} a {3} no grupo {4}.",
@@ -107,6 +107,7 @@ namespace FatureJa.Negocio.Mensagens
             dynamic mensagem = new
                                    {
                                        Comando = "GerarMovimentoParaLoteDeContratos",
+                                       ProcessamentoId = processamentoId,
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,

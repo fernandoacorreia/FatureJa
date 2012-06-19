@@ -6,11 +6,12 @@
         {
             FilaDeMensagens.Inicializar();
             TabelaDeContratos.Inicializar();
-            TabelaDeItensDeContratos.Inicializar();
+            TabelaDeItensDeContrato.Inicializar();
             TabelaDeMovimento.Inicializar();
             TabelaDeFaturas.Inicializar();
-            TabelaDeItensDeFaturas.Inicializar();
+            TabelaDeItensDeFatura.Inicializar();
             new RepositorioDeProcessamentos().Inicializar();
+            new RepositorioDeEventosDeProcessamento().Inicializar();
         }
     }
 }

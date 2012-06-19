@@ -65,11 +65,11 @@ namespace FatureJa.Negocio.Mensagens
             }
             else
             {
-                Faturar(ano, mes, primeiro, ultimo);
+                Faturar(processamentoId, ano, mes, primeiro, ultimo);
             }
         }
 
-        private void Faturar(int ano, int mes, int primeiroContrato, int ultimoContrato)
+        private void Faturar(Guid processamentoId, int ano, int mes, int primeiroContrato, int ultimoContrato)
         {
             Trace.WriteLine(
                 String.Format("Solicitando faturamento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
@@ -93,13 +93,13 @@ namespace FatureJa.Negocio.Mensagens
                 {
                     fim = ultimoContrato;
                 }
-                SolicitarFaturamentoParaLote(ano, mes, inicio, fim, grupo);
+                SolicitarFaturamentoParaLote(processamentoId, ano, mes, inicio, fim, grupo);
                 grupo += 1;
                 inicio = fim + 1;
             }
         }
 
-        private void SolicitarFaturamentoParaLote(int ano, int mes, int inicio, int fim, int grupo)
+        private void SolicitarFaturamentoParaLote(Guid processamentoId, int ano, int mes, int inicio, int fim, int grupo)
         {
             Trace.WriteLine(
                 String.Format("Solicitando faturamento para {0}/{1} dos contratos de {2} a {3} no grupo {4}.",
@@ -107,6 +107,7 @@ namespace FatureJa.Negocio.Mensagens
             dynamic mensagem = new
                                    {
                                        Comando = "FaturarLoteDeContratos",
+                                       ProcessamentoId = processamentoId,
                                        Ano = ano,
                                        Mes = mes,
                                        Inicio = inicio,

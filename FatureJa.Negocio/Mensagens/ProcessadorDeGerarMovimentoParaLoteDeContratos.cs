@@ -43,7 +43,31 @@ namespace FatureJa.Negocio.Mensagens
                     "mensagem");
             }
 
+            Guid processamentoId = mensagem.ProcessamentoId;
+            if (processamentoId == Guid.Empty)
+            {
+                throw new ArgumentException("O identificador do processamento não foi encontrado.", "mensagem");
+            }
+
+            DateTime dataHoraInicio = DateTime.UtcNow;
+
             GerarMovimentoParaLoteDeContratos(ano, mes, inicio, fim);
+
+            RegistrarEvento(processamentoId, inicio, fim, dataHoraInicio);
+        }
+
+        private static void RegistrarEvento(Guid processamentoId, int inicio, int fim, DateTime dataHoraInicio)
+        {
+            var repositorio = new RepositorioDeEventosDeProcessamento();
+            repositorio.Incluir(new EventoDeProcessamento
+            {
+                PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
+                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio),
+                Comando = "GerarMovimentoParaLoteDeContratos",
+                Inicio = dataHoraInicio,
+                Termino = DateTime.UtcNow,
+                Operacoes = fim - inicio + 1
+            });
         }
 
         private static void GerarMovimentoParaLoteDeContratos(int ano, int mes, int inicio, int fim)

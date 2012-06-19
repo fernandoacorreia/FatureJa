@@ -46,16 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Armazenamento\InicializadorDeArmazenamento.cs" />
+    <Compile Include="Armazenamento\RepositorioCloudTable.cs" />
+    <Compile Include="Armazenamento\RepositorioDeEventosDeProcessamento.cs" />
     <Compile Include="Armazenamento\RepositorioDeProcessamentos.cs" />
     <Compile Include="Armazenamento\TabelaDeFaturas.cs" />
-    <Compile Include="Armazenamento\TabelaDeItensDeContratos.cs" />
-    <Compile Include="Armazenamento\TabelaDeItensDeFaturas.cs" />
+    <Compile Include="Armazenamento\TabelaDeItensDeContrato.cs" />
+    <Compile Include="Armazenamento\TabelaDeItensDeFatura.cs" />
     <Compile Include="Armazenamento\TabelaDeMovimento.cs" />
+    <Compile Include="Entidades\EventoDeProcessamento.cs" />
     <Compile Include="Entidades\Fatura.cs" />
     <Compile Include="Entidades\ItemDeContrato.cs" />
     <Compile Include="Entidades\ItemDeFatura.cs" />
     <Compile Include="Entidades\Movimento.cs" />
     <Compile Include="Entidades\Processamento.cs" />
+    <Compile Include="Infraestrutura\CloudStorageAccountFactory.cs" />
     <Compile Include="Mensagens\DespachanteDeMensagem.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturarLoteDeContratos.cs" />

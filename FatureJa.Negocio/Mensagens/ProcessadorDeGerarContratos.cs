@@ -53,11 +53,11 @@ namespace FatureJa.Negocio.Mensagens
             }
             else
             {
-                SolicitarGeracaoDeLote(primeiro, ultimo);
+                SolicitarGeracaoDeLote(processamentoId, primeiro, ultimo);
             }
         }
 
-        private void SolicitarGeracaoDeLote(int primeiro, int ultimo)
+        private void SolicitarGeracaoDeLote(Guid processamentoId, int primeiro, int ultimo)
         {
             Trace.WriteLine(string.Format("Solicitando geração de contratos de {0} a {1}.", primeiro, ultimo), "Information");
 
@@ -79,13 +79,13 @@ namespace FatureJa.Negocio.Mensagens
                 {
                     fim = ultimo;
                 }
-                SolicitarGeracaoDeLote(inicio, fim, grupo);
+                SolicitarGeracaoDeLote(processamentoId, inicio, fim, grupo);
                 grupo += 1;
                 inicio = fim + 1;
             }
         }
 
-        private void SolicitarGeracaoDeLote(int inicio, int fim, int grupo)
+        private void SolicitarGeracaoDeLote(Guid processamentoId, int inicio, int fim, int grupo)
         {
             Trace.WriteLine(
                 String.Format("Solicitando geração de contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
@@ -93,6 +93,7 @@ namespace FatureJa.Negocio.Mensagens
             dynamic mensagem = new
                                    {
                                        Comando = "GerarLoteDeContratos",
+                                       ProcessamentoId = processamentoId,
                                        Inicio = inicio,
                                        Fim = fim,
                                        Grupo = grupo
