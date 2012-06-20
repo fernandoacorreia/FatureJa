@@ -169,6 +169,7 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\dygraph-combined.js" />
     <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.2.js" />
     <Content Include="Scripts\jquery-1.6.2.min.js" />
@@ -255,7 +256,10 @@
     <Content Include="Views\Faturamento\FaturamentoSolicitado.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Acompanhamento\Eventos.cshtml" />
+    <Content Include="Views\Acompanhamento\Lista.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Acompanhamento\Visualizacao.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

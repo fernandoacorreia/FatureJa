@@ -25,5 +25,13 @@ namespace FatureJa.Negocio.Entidades
             string ticksFormatados = ticksInvertidos.ToString().PadLeft(20, '0');
             return ticksFormatados;
         }
+
+        public DateTime ObterHorarioArredondado(int segundos)
+        {
+            TimeSpan intervalo = TimeSpan.FromSeconds(segundos);
+            long ticks = intervalo.Ticks;
+            var rounded = new DateTime(((Termino.Ticks + ticks/2)/ticks)*ticks);
+            return rounded;
+        }
     }
 }

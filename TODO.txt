@@ -1,8 +1,4 @@
-﻿Preparar ambiente no Azure (storage, SQL, serviços) e fazer deploy.
-
-Gráfico de progresso
-
-Refactor: Converter tabelas em repositórios com classe base.
+﻿Refactor: Converter tabelas em repositórios com classe base.
 
 Definir a retry policy do TableServiceContext
 
@@ -35,3 +31,6 @@ Ativar diagnósticos para ver mensagens de trace
 Mudar Traces para Information
 
 Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens
+
+Ajustar a página inicial
+

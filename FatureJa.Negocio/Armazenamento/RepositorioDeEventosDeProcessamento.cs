@@ -13,7 +13,7 @@ namespace FatureJa.Negocio.Armazenamento
             Nome = "EventosDeProcessamento";
         }
 
-        public IEnumerable<EventoDeProcessamento> ObterUltimosEventos(Guid processamentoId, int take)
+        public List<EventoDeProcessamento> ObterUltimosEventos(Guid processamentoId, int take)
         {
             TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
             CloudTableQuery<EventoDeProcessamento> query =

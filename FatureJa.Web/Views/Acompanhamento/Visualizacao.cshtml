@@ -1,0 +1,42 @@
+﻿@Scripts.Render("~/Scripts/dygraph-combined.js")
+
+@{
+    ViewBag.Title = "Acompanhamento";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<div>
+    @Html.ActionLink("Lista", "Lista", "Acompanhamento", new { processamentoId = ViewBag.ProcessamentoId }, null)&nbsp;
+    <strong>Visualização</strong>
+</div>
+
+@if (!String.IsNullOrEmpty(ViewBag.Mensagem))
+{
+    <p class="message-info">
+        @ViewBag.Mensagem
+    </p>
+}
+else
+{
+    <div id="graphdiv" style="width:800px; height:400px;"></div>
+    <script type="text/javascript">
+        g = new Dygraph(
+            document.getElementById("graphdiv"),
+            @Html.Raw(ViewBag.Csv),
+            {
+                title: '@ViewBag.Velocidade itens/segundo',
+                fillGraph: true, 
+                strokeWidth: 2,
+                labelsDivStyles:
+                {
+                    'backgroundColor': 'transparent'
+                },
+                xAxisLabelWidth: 60
+            }
+        );
+    </script>
+}

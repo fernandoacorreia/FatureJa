@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Acompanhamento";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+<div>
+    <strong>Lista</strong>&nbsp;
+    @Html.ActionLink("Visualização", "Visualizacao", "Acompanhamento", new { processamentoId = ViewBag.ProcessamentoId }, null)
+</div>
+
+@if (!String.IsNullOrEmpty(ViewBag.Mensagem))
+{
+    <p class="message-info">
+        @ViewBag.Mensagem
+    </p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>
+                Início
+            </th>
+            <th>
+                Término
+            </th>
+            <th>
+                Comando
+            </th>
+            <th>
+                Quantidade
+            </th>
+        </tr>
+        @foreach (dynamic eventos in ViewBag.Eventos)
+        {
+            <tr>
+                <td>
+                    @eventos.Inicio
+                </td>
+                <td>
+                    @eventos.Termino
+                </td>
+                <td>
+                    @eventos.Comando
+                </td>
+                <td>
+                    @eventos.Quantidade
+                </td>
+            </tr>
+        }
+    </table>
+}
