@@ -1,16 +1,12 @@
-﻿Consulta de processamentos
+﻿Preparar ambiente no Azure (storage, SQL, serviços) e fazer deploy.
 
-Consulta de eventos de processamento
-
-Se possível com gráfico de progresso
+Gráfico de progresso
 
 Refactor: Converter tabelas em repositórios com classe base.
 
 Definir a retry policy do TableServiceContext
 
 Documentar estrutura
-
-Configurar para funcionar no Azure
 
 TODO: SÉRIE, NÚMERO DA FATURA
 
@@ -31,3 +27,11 @@ Otimizar:
 Logotipo
 
 Link para projeto no rodapé de copyright
+
+Ver o que acontece se mandar gerar contratos após já ter gerado. Idealmente deveria ajustar os números de início e fim.
+
+Ativar diagnósticos para ver mensagens de trace
+
+Mudar Traces para Information
+
+Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens

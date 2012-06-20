@@ -6,13 +6,8 @@ namespace FatureJa.Negocio.Infraestrutura
     {
         public static CloudStorageAccount ObterCloudStorageAccount()
         {
-            // TODO
-            string connectionString1 = "UseDevelopmentStorage=true";
-            string connectionString2 =
-                "DefaultEndpointsProtocol=https;AccountName=...;AccountKey=...";
-
-
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString1);
+            string stringDeConexao = AmbienteDaNuvem.StringDeConexaoAStorage;
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(stringDeConexao);
             return storageAccount;
         }
     }
