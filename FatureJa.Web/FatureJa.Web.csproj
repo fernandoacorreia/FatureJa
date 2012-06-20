@@ -258,7 +258,8 @@
     <Content Include="Views\Faturamento\FaturamentoSolicitado.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Acompanhamento\Visualizacao.cshtml" />
+    <Content Include="Views\Acompanhamento\VisualizacaoAcumulada.cshtml" />
+    <Content Include="Views\Acompanhamento\VisualizacaoPorPeriodo.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

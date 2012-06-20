@@ -41,7 +41,7 @@ namespace FatureJa.Web.Controllers
             return View();
         }
 
-        public ActionResult Visualizacao(Guid processamentoId)
+        public ActionResult VisualizacaoPorPeriodo(Guid processamentoId)
         {
             ViewBag.ProcessamentoId = processamentoId;
 
@@ -49,7 +49,7 @@ namespace FatureJa.Web.Controllers
             ViewBag.Message = String.Format("{0} {1}", processamento.Comando, processamento.Parametros);
 
             var repositorio = new RepositorioDeEventosDeProcessamento();
-            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 10000);
+            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 1000);
 
             if (eventos.Count == 0)
             {
@@ -66,15 +66,53 @@ namespace FatureJa.Web.Controllers
                  select new {Periodo = g.Key, Quantidade = g.Sum(o => o.Quantidade)})
                     .ToList();
 
+            long quantidadeAcumulada = 0;
             var seriePorPeriodo = new StringBuilder();
             seriePorPeriodo.AppendLine("\"Horario,Quantidade\\n\" +");
             foreach (var item in quantidadePorFaixa)
             {
+                quantidadeAcumulada += item.Quantidade;
                 seriePorPeriodo.AppendLine(String.Format("\"{0},{1}\\n\" +", item.Periodo.ToString("yyyy/MM/dd HH:mm:ss"),
                                              item.Quantidade));
             }
             seriePorPeriodo.AppendLine("\"\"");
-            ViewBag.SeriePorPeriodo = seriePorPeriodo.ToString();
+            ViewBag.Serie = seriePorPeriodo.ToString();
+
+            ViewBag.Quantidade = quantidadeAcumulada;
+
+            var minDate = (from e in eventos select e.Inicio).Min();
+            var maxDate = (from e in eventos select e.Termino).Max();
+            TimeSpan duracao = maxDate - minDate;
+            double velocidade = duracao.TotalSeconds == 0 ? 0 : Math.Round(quantidadeAcumulada/duracao.TotalSeconds, 1);
+            ViewBag.Velocidade = velocidade;
+
+            return View();
+        }
+
+        public ActionResult VisualizacaoAcumulada(Guid processamentoId)
+        {
+            ViewBag.ProcessamentoId = processamentoId;
+
+            var processamento = new RepositorioDeProcessamentos().ObterPorProcessamentoId(processamentoId);
+            ViewBag.Message = String.Format("{0} {1}", processamento.Comando, processamento.Parametros);
+
+            var repositorio = new RepositorioDeEventosDeProcessamento();
+            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, int.MaxValue);
+
+            if (eventos.Count == 0)
+            {
+                ViewBag.Mensagem = "Não há nenhum evento registrado para este processamento.";
+                return View();
+            }
+
+            var quantidadePorFaixa =
+                (from e in eventos
+                 let periodo = e.ObterHorarioArredondado(5)
+                 orderby periodo
+                 group e by periodo
+                     into g
+                     select new { Periodo = g.Key, Quantidade = g.Sum(o => o.Quantidade) })
+                    .ToList();
 
             long quantidadeAcumulada = 0;
             var serieAcumulada = new StringBuilder();
@@ -86,13 +124,13 @@ namespace FatureJa.Web.Controllers
                                              quantidadeAcumulada));
             }
             serieAcumulada.AppendLine("\"\"");
-            ViewBag.SerieAcumulada = serieAcumulada.ToString();
+            ViewBag.Serie = serieAcumulada.ToString();
             ViewBag.Quantidade = quantidadeAcumulada;
 
             var minDate = (from e in eventos select e.Inicio).Min();
             var maxDate = (from e in eventos select e.Termino).Max();
             TimeSpan duracao = maxDate - minDate;
-            double velocidade = duracao.TotalSeconds == 0 ? 0 : Math.Round(quantidadeAcumulada/duracao.TotalSeconds, 1);
+            double velocidade = duracao.TotalSeconds == 0 ? 0 : Math.Round(quantidadeAcumulada / duracao.TotalSeconds, 1);
             ViewBag.Velocidade = velocidade;
 
             return View();
