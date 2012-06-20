@@ -56,8 +56,7 @@ namespace FatureJa.Negocio.Mensagens
             if (quantidade > _quantidadeMaximaPorLote)
             {
                 Trace.WriteLine(
-                    String.Format("Subdividindo solicitação de faturamento para {0}/{1} dos contratos {2} a {3}.", mes, ano, primeiro, ultimo),
-                    "Information");
+                    String.Format("Subdividindo solicitação de faturamento para {0}/{1} dos contratos {2} a {3}.", mes, ano, primeiro, ultimo));
                 int meio = (ultimo - primeiro) / 2 + primeiro;
                 var gerador = new FaturamentoDeContratos();
                 gerador.SolicitarFaturamento(processamentoId, ano, mes, primeiro, meio);
@@ -73,7 +72,7 @@ namespace FatureJa.Negocio.Mensagens
         {
             Trace.WriteLine(
                 String.Format("Solicitando faturamento para {0}/{1} do contrato {2} até {3}.", mes, ano, primeiroContrato,
-                              ultimoContrato), "Information");
+                              ultimoContrato));
 
             int grupoDoPrimeiroContrato = Contrato.ObterGrupo(primeiroContrato);
             int grupoDoUltimoContrato = Contrato.ObterGrupo(ultimoContrato);
@@ -103,7 +102,7 @@ namespace FatureJa.Negocio.Mensagens
         {
             Trace.WriteLine(
                 String.Format("Solicitando faturamento para {0}/{1} dos contratos de {2} a {3} no grupo {4}.",
-                              mes, ano, inicio, fim, grupo), "Information");
+                              mes, ano, inicio, fim, grupo));
             dynamic mensagem = new
                                    {
                                        Comando = "FaturarLoteDeContratos",

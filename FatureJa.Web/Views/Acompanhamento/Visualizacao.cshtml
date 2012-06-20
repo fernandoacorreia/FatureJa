@@ -9,11 +9,6 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<div>
-    @Html.ActionLink("Lista", "Lista", "Acompanhamento", new { processamentoId = ViewBag.ProcessamentoId }, null)&nbsp;
-    <strong>Visualização</strong>
-</div>
-
 @if (!String.IsNullOrEmpty(ViewBag.Mensagem))
 {
     <p class="message-info">
@@ -22,19 +17,39 @@
 }
 else
 {
-    <div id="graphdiv" style="width:800px; height:400px;"></div>
+    <div id="visualizacaoPorPeriodo" style="width:800px; height:400px;"></div>
+    <br>
+    <div id="visualizacaoAcumulada" style="width:800px; height:400px;"></div>
+    <br>
+    <div><span style="font-size: 16px"><strong>@ViewBag.Quantidade</strong></span> itens processados a <span style="font-size: 16px"><strong>@ViewBag.Velocidade</strong></span> itens por segundo.</div>
+    
     <script type="text/javascript">
-        g = new Dygraph(
-            document.getElementById("graphdiv"),
-            @Html.Raw(ViewBag.Csv),
+        g1 = new Dygraph(
+            document.getElementById("visualizacaoPorPeriodo"),
+            @Html.Raw(ViewBag.SeriePorPeriodo),
             {
-                title: '@ViewBag.Velocidade itens/segundo',
+                title: 'Processamento por período',
                 fillGraph: true, 
                 strokeWidth: 2,
                 labelsDivStyles:
                 {
                     'backgroundColor': 'transparent'
                 },
+                xAxisLabelWidth: 60
+            }
+        );
+
+        g2 = new Dygraph(
+            document.getElementById("visualizacaoAcumulada"),
+            @Html.Raw(ViewBag.SerieAcumulada),
+            {
+                title: 'Processamento acumulado',
+                fillGraph: true, 
+                strokeWidth: 2,
+                labelsDivStyles:
+                    {
+                        'backgroundColor': 'transparent'
+                    },
                 xAxisLabelWidth: 60
             }
         );

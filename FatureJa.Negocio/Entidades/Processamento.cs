@@ -18,12 +18,12 @@ namespace FatureJa.Negocio.Entidades
             return DateTime.UtcNow.ToString("yyyyMM");
         }
 
-        public static string ObterRowKey()
+        public static string ObterRowKey(Guid processamentoId)
         {
             long ticksInicio = DateTime.UtcNow.Ticks;
             long ticksInvertidos = long.MaxValue - ticksInicio;
             string ticksFormatados = ticksInvertidos.ToString().PadLeft(20, '0');
-            return ticksFormatados;
+            return String.Format("{0}-{1}", ticksFormatados, processamentoId);
         }
     }
 }

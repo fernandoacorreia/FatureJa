@@ -16,7 +16,7 @@ namespace FatureJa.Worker
             while (true)
             {
                 processador.ProcessarMensagensNaFila();
-                Trace.WriteLine("Nenhuma mensagem na fila. Aguardando...", "Information");
+                Trace.WriteLine("Nenhuma mensagem na fila. Aguardando...");
                 Thread.Sleep(intervalo);
             }
         }

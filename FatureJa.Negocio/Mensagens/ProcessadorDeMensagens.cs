@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using FatureJa.Negocio.Armazenamento;
+using FatureJa.Negocio.Util;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
@@ -13,10 +13,10 @@ namespace FatureJa.Negocio.Mensagens
     {
         public void ProcessarMensagensNaFila()
         {
-            Trace.TraceInformation("Processando mensagens da fila.");
+            Trace.WriteLine("Processando mensagens da fila.");
             CloudQueue fila = FilaDeMensagens.GetCloudQueue();
 
-            Parallel.ForEach<CloudQueueMessage>(ObterMensagens(fila), (mensagem) => ProcessarMensagem(fila, mensagem));
+            Parallel.ForEach(ObterMensagens(fila), (mensagem) => ProcessarMensagem(fila, mensagem));
         }
 
         private static IEnumerable<CloudQueueMessage> ObterMensagens(CloudQueue fila)
@@ -25,7 +25,7 @@ namespace FatureJa.Negocio.Mensagens
 
             while (true)
             {
-                var mensagem = fila.GetMessage(tempoDeInvisibilidade);
+                CloudQueueMessage mensagem = fila.GetMessage(tempoDeInvisibilidade);
                 if (mensagem != null)
                 {
                     yield return mensagem;
@@ -45,19 +45,19 @@ namespace FatureJa.Negocio.Mensagens
             {
                 if (mensagem.DequeueCount > limiteDeTentativas)
                 {
-                    Trace.WriteLine(
+                    Trace.TraceError(
                         String.Format("A mensagem não pôde ser processada após várias tentativas: '{0}'.",
-                                      mensagem.AsString), "Error");
+                                      mensagem.AsString));
                 }
                 else
                 {
                     var mensagemDeserializada = JsonConvert.DeserializeObject<dynamic>(mensagem.AsString);
                     if (mensagemDeserializada == null)
                     {
-                        Trace.WriteLine(
+                        Trace.TraceError(
                             String.Format(
                                 "A mensagem não é válida; a deserialização resultou em um objeto nulo: '{0}'.",
-                                mensagem.AsString), "Error");
+                                mensagem.AsString));
                     }
                     else
                     {
@@ -68,8 +68,8 @@ namespace FatureJa.Negocio.Mensagens
             }
             catch (Exception ex)
             {
-                Trace.WriteLine(
-                    String.Format("Erro processando mensagem '{0}': '{1}'.", mensagem.AsString, ex.Message), "Error");
+                Trace.TraceError(
+                    String.Format("Erro no processamento da mensagem '{0}': '{1}'.", mensagem.AsString, ex.ToString()));
             }
         }
     }

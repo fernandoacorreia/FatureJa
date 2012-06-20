@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.WindowsAzure.StorageClient, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
@@ -62,6 +63,7 @@
     <Compile Include="Entidades\Processamento.cs" />
     <Compile Include="Infraestrutura\AmbienteDaNuvem.cs" />
     <Compile Include="Infraestrutura\CloudStorageAccountFactory.cs" />
+    <Compile Include="Infraestrutura\Diagnostico.cs" />
     <Compile Include="Mensagens\DespachanteDeMensagem.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturar.cs" />
     <Compile Include="Mensagens\ProcessadorDeFaturarLoteDeContratos.cs" />

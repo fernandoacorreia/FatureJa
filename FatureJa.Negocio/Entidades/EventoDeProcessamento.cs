@@ -18,12 +18,12 @@ namespace FatureJa.Negocio.Entidades
             return processamentoId.ToString();
         }
 
-        public static string ObterRowKey(DateTime inicio)
+        public static string ObterRowKey(DateTime inicio, Guid eventoId)
         {
             long ticksInicio = inicio.Ticks;
             long ticksInvertidos = long.MaxValue - ticksInicio;
             string ticksFormatados = ticksInvertidos.ToString().PadLeft(20, '0');
-            return ticksFormatados;
+            return String.Format("{0}-{1}", ticksFormatados, eventoId);
         }
 
         public DateTime ObterHorarioArredondado(int segundos)

@@ -62,7 +62,7 @@ namespace FatureJa.Negocio.Mensagens
             repositorio.Incluir(new EventoDeProcessamento
             {
                 PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
-                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio),
+                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
                 Comando = "GerarMovimentoParaLoteDeContratos",
                 Inicio = dataHoraInicio,
                 Termino = DateTime.UtcNow,
@@ -72,9 +72,9 @@ namespace FatureJa.Negocio.Mensagens
 
         private static void GerarMovimentoParaLoteDeContratos(int ano, int mes, int inicio, int fim)
         {
-            Trace.WriteLine(
+            Trace.TraceInformation(
                 String.Format("Gerando movimento para {0}/{1} dos contratos de {2} a {3}.", mes, ano,
-                              inicio, fim), "Information");
+                              inicio, fim));
 
             CloudTableClient clienteMovimento = TabelaDeMovimento.GetCloudTableClient();
             for (int contratoAtual = inicio; contratoAtual <= fim; contratoAtual++)

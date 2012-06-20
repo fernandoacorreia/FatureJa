@@ -23,6 +23,8 @@ namespace FatureJa.Web.Controllers
 
         public ActionResult Lista(Guid processamentoId)
         {
+            ViewBag.ProcessamentoId = processamentoId;
+
             var processamento = new RepositorioDeProcessamentos().ObterPorProcessamentoId(processamentoId);
             ViewBag.Message = String.Format("{0} {1}", processamento.Comando, processamento.Parametros);
 
@@ -35,20 +37,19 @@ namespace FatureJa.Web.Controllers
                 return View();
             }
 
-            ViewBag.ProcessamentoId = processamentoId;
             ViewBag.Eventos = eventos;
             return View();
         }
 
         public ActionResult Visualizacao(Guid processamentoId)
         {
+            ViewBag.ProcessamentoId = processamentoId;
+
             var processamento = new RepositorioDeProcessamentos().ObterPorProcessamentoId(processamentoId);
             ViewBag.Message = String.Format("{0} {1}", processamento.Comando, processamento.Parametros);
 
-            ViewBag.ProcessamentoId = processamentoId;
-
             var repositorio = new RepositorioDeEventosDeProcessamento();
-            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 1000);
+            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 10000);
 
             if (eventos.Count == 0)
             {
@@ -65,20 +66,28 @@ namespace FatureJa.Web.Controllers
                  select new {Periodo = g.Key, Quantidade = g.Sum(o => o.Quantidade)})
                     .ToList();
 
-            var csv = new StringBuilder();
-            csv.AppendLine("\"Horario,Quantidade\\n\" +");
+            var seriePorPeriodo = new StringBuilder();
+            seriePorPeriodo.AppendLine("\"Horario,Quantidade\\n\" +");
+            foreach (var item in quantidadePorFaixa)
+            {
+                seriePorPeriodo.AppendLine(String.Format("\"{0},{1}\\n\" +", item.Periodo.ToString("yyyy/MM/dd HH:mm:ss"),
+                                             item.Quantidade));
+            }
+            seriePorPeriodo.AppendLine("\"\"");
+            ViewBag.SeriePorPeriodo = seriePorPeriodo.ToString();
 
             long quantidadeAcumulada = 0;
+            var serieAcumulada = new StringBuilder();
+            serieAcumulada.AppendLine("\"Horario,Quantidade\\n\" +");
             foreach (var item in quantidadePorFaixa)
             {
                 quantidadeAcumulada += item.Quantidade;
-                csv.AppendLine(String.Format("\"{0},{1}\\n\" +", item.Periodo.ToString("yyyy/MM/dd HH:mm:ss"),
+                serieAcumulada.AppendLine(String.Format("\"{0},{1}\\n\" +", item.Periodo.ToString("yyyy/MM/dd HH:mm:ss"),
                                              quantidadeAcumulada));
             }
+            serieAcumulada.AppendLine("\"\"");
+            ViewBag.SerieAcumulada = serieAcumulada.ToString();
             ViewBag.Quantidade = quantidadeAcumulada;
-
-            csv.AppendLine("\"\"");
-            ViewBag.Csv = csv.ToString();
 
             var minDate = (from e in eventos select e.Inicio).Min();
             var maxDate = (from e in eventos select e.Termino).Max();

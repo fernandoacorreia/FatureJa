@@ -14,7 +14,7 @@ namespace FatureJa.Negocio.Servicos
             int ultimoContrato = TabelaDeContratos.ObterNumeroDoUltimoContrato();
             if (ultimoContrato == 0)
             {
-                Trace.TraceInformation("Não foi encontrado nenhum contrato.");
+                Trace.TraceWarning("Não foi encontrado nenhum contrato.");
                 return;
             }
 
@@ -26,20 +26,21 @@ namespace FatureJa.Negocio.Servicos
         private void RegistrarProcessamento(Guid processamentoId, int ano, int mes)
         {
             var processamento = new Processamento
-            {
-                PartitionKey = Processamento.ObterPartitionKey(),
-                RowKey = Processamento.ObterRowKey(),
-                ProcessamentoId = processamentoId,
-                Comando = "Faturar",
-                Inicio = DateTime.UtcNow,
-                Parametros = String.Format("Ano={0}; Mes={1}", ano, mes)
-            };
+                                    {
+                                        PartitionKey = Processamento.ObterPartitionKey(),
+                                        RowKey = Processamento.ObterRowKey(processamentoId),
+                                        ProcessamentoId = processamentoId,
+                                        Comando = "Faturar",
+                                        Inicio = DateTime.UtcNow,
+                                        Parametros = String.Format("Ano={0}; Mes={1}", ano, mes)
+                                    };
             new RepositorioDeProcessamentos().Incluir(processamento);
         }
 
         public void SolicitarFaturamento(Guid processamentoId, int ano, int mes, int primeiro, int ultimo)
         {
-            Trace.TraceInformation(string.Format("Solicitando faturamento para {0}/{1} dos contratos {2} a {3}.", mes, ano, primeiro, ultimo));
+            Trace.WriteLine(string.Format("Solicitando faturamento para {0}/{1} dos contratos {2} a {3}.", mes, ano,
+                                          primeiro, ultimo));
             dynamic mensagem = new
                                    {
                                        Comando = "Faturar",

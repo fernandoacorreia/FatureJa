@@ -78,7 +78,7 @@ namespace FatureJa.Negocio.Mensagens
             repositorio.Incluir(new EventoDeProcessamento
             {
                 PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
-                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio),
+                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
                 Comando = "FaturarLoteDeContratos",
                 Inicio = dataHoraInicio,
                 Termino = DateTime.UtcNow,
@@ -88,9 +88,9 @@ namespace FatureJa.Negocio.Mensagens
 
         private void FaturarLoteDeContratos(int ano, int mes, int inicio, int fim, int grupo)
         {
-            Trace.WriteLine(
+            Trace.TraceInformation(
                 String.Format("Gerando faturamento para {0}/{1} do contrato {2} até {3} do grupo {4}.", mes, ano, inicio,
-                              fim, grupo), "Information");
+                              fim, grupo));
 
             for (int atual = inicio; atual <= fim; atual++)
             {
@@ -103,7 +103,7 @@ namespace FatureJa.Negocio.Mensagens
             Contrato contrato = ObterContrato(atual);
             if (contrato == null)
             {
-                Trace.WriteLine(String.Format("O contrato {0} não foi encontrado.", atual), "Error");
+                Trace.TraceError(String.Format("O contrato {0} não foi encontrado.", atual));
                 return;
             }
 

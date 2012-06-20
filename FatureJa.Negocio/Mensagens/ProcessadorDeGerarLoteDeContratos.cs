@@ -56,7 +56,7 @@ namespace FatureJa.Negocio.Mensagens
             repositorio.Incluir(new EventoDeProcessamento
                                     {
                                         PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
-                                        RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio),
+                                        RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
                                         Comando = "GerarLoteDeContratos",
                                         Inicio = dataHoraInicio,
                                         Termino = DateTime.UtcNow,
@@ -66,8 +66,7 @@ namespace FatureJa.Negocio.Mensagens
 
         private static void GerarLoteDeContratos(int inicio, int fim, int grupo)
         {
-            Trace.WriteLine(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo),
-                            "Information");
+            Trace.TraceInformation(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo));
 
             CloudTableClient clienteContratos = TabelaDeContratos.GetCloudTableClient();
             TableServiceContext contextoContratos = clienteContratos.GetDataServiceContext();

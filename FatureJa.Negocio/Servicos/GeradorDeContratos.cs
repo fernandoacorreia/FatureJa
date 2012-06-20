@@ -21,7 +21,7 @@ namespace FatureJa.Negocio.Servicos
             var processamento = new Processamento
                                     {
                                         PartitionKey = Processamento.ObterPartitionKey(),
-                                        RowKey = Processamento.ObterRowKey(),
+                                        RowKey = Processamento.ObterRowKey(processamentoId),
                                         ProcessamentoId = processamentoId,
                                         Comando = "GerarContratos",
                                         Inicio = DateTime.UtcNow,
@@ -32,7 +32,7 @@ namespace FatureJa.Negocio.Servicos
 
         public void SolicitarGeracao(Guid processamentoId, int primeiro, int ultimo)
         {
-            Trace.TraceInformation(string.Format("Solicitando geração dos contratos {0} a {1}.", primeiro, ultimo));
+            Trace.WriteLine(string.Format("Solicitando geração dos contratos {0} a {1}.", primeiro, ultimo));
             dynamic mensagem = new
                                    {
                                        Comando = "GerarContratos",

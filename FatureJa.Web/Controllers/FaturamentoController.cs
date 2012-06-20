@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using FatureJa.Negocio.Servicos;
 using FatureJa.Web.Models;
 
@@ -28,8 +29,9 @@ namespace FatureJa.Web.Controllers
                 faturamento.SolicitarFaturamento(model.Ano, model.Mes);
                 return RedirectToAction("FaturamentoSolicitado");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("", ex.Message);
                 return View();
             }
         }

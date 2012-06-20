@@ -39,7 +39,7 @@ namespace FatureJa.Negocio.Mensagens
             }
             else
             {
-                Trace.WriteLine(String.Format("O comando '{0}' não foi reconhecido.", comando), "Error");
+                Trace.TraceError(String.Format("O comando '{0}' não foi reconhecido.", comando));
             }
         }
     }
