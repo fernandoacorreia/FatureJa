@@ -1,7 +1,5 @@
 ﻿Testar novamente: gerar movimento e gerar faturamento.
 
-Criar uma visualização da variação da velocidade média com 2 séries: desde o início e nos últimos 60 segundos
-
 Ajustar a página inicial
 
 Logotipo

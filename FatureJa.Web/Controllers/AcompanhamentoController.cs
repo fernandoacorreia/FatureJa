@@ -48,6 +48,12 @@ namespace FatureJa.Web.Controllers
                 return View();
             }
 
+            var idadeDaUltimaMedicao = DateTime.UtcNow - quantidadePorFaixa[quantidadePorFaixa.Count - 1].Periodo;
+            if (idadeDaUltimaMedicao.TotalSeconds <= segundosPorFaixa)
+            {
+                quantidadePorFaixa.RemoveAt(quantidadePorFaixa.Count - 1); // descartar medição incompleta
+            }
+
             // série de dados por período
             var seriePorPeriodo = new StringBuilder();
             seriePorPeriodo.AppendLine("\"Horário,Quantidade\\n\" +");

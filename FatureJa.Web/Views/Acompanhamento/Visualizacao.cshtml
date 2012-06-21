@@ -47,17 +47,12 @@ else
             document.getElementById("visualizacaoPorPeriodo"),
             @Html.Raw(ViewBag.SeriePorPeriodo),
             {
-                title: 'Processamento por Período',
+                title: 'Processamento por Períodos de 5s',
                 fillGraph: true, 
                 strokeWidth: 2,
-                labelsDivStyles:
-                {
-                    'backgroundColor': 'transparent'
-                },
                 xAxisLabelWidth: 70,
                 includeZero: true,
-                labelsDivWidth: 150,
-                labelsSeparateLines: true
+                labelsDivWidth: 350
             }
         );
         
@@ -65,17 +60,12 @@ else
             document.getElementById("visualizacaoDeVelocidadeMedia"),
             @Html.Raw(ViewBag.SerieVelocidadeMedia),
             {
-                title: 'Velocidade Média de Processamento',
+                title: 'Velocidade Média de Processamento (itens/s)',
                 fillGraph: true, 
                 strokeWidth: 2,
-                labelsDivStyles:
-                {
-                    'backgroundColor': 'transparent'
-                },
                 xAxisLabelWidth: 70,
                 includeZero: true,
-                labelsDivWidth: 150,
-                labelsSeparateLines: true
+                labelsDivWidth: 400
             }
         );
         
@@ -86,14 +76,9 @@ else
                 title: 'Processamento Acumulado',
                 fillGraph: true, 
                 strokeWidth: 2,
-                labelsDivStyles:
-                {
-                    'backgroundColor': 'transparent'
-                },
                 xAxisLabelWidth: 70,
                 includeZero: true,
-                labelsDivWidth: 150,
-                labelsSeparateLines: true
+                labelsDivWidth: 350
             }
         );
     </script>
