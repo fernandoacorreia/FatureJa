@@ -10,7 +10,7 @@ namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeFaturar
     {
-        private const int _quantidadeMaximaPorLote = 100;
+        private const int _quantidadeMaximaPorLote = 20;
 
         public void Processar(dynamic mensagem)
         {

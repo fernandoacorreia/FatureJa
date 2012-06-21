@@ -16,10 +16,9 @@ namespace FatureJa.Negocio.Armazenamento
         public IEnumerable<Processamento> ObterUltimosProcessamentos(int take)
         {
             TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
-            CloudTableQuery<Processamento> query =
+            return
                 (from p in serviceContext.CreateQuery<Processamento>(Nome)
-                 select p).Take(take).AsTableServiceQuery();
-            return query.ToList();
+                 select p).Take(take).AsTableServiceQuery().ToList();
         }
 
         public Processamento ObterPorProcessamentoId(Guid processamentoId)

@@ -23,7 +23,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(((DateTime)processamento.Inicio).ToString(), "VisualizacaoPorPeriodo", "Acompanhamento", new { processamentoId = processamento.ProcessamentoId }, null)
+                @Html.ActionLink(((DateTime)processamento.Inicio).ToString(), "Visualizacao", "Acompanhamento", new { processamentoId = processamento.ProcessamentoId }, null)
             </td>
             <td>
                 @processamento.Comando

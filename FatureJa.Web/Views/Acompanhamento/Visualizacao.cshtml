@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Acompanhamento";
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <h2>@ViewBag.Message</h2>
+</hgroup>
+
+@if (!String.IsNullOrEmpty(ViewBag.Erro))
+{
+    <p class="message-info">
+        @ViewBag.Erro
+    </p>
+}
+else
+{
+    <div id="tabs">
+        <ul>
+            <li><a href="#tabs-1">Por período</a></li>
+            <li><a href="#tabs-2">Velocidade média</a></li>
+            <li><a href="#tabs-3">Acumulado</a></li>
+        </ul>
+        <div id="tabs-1">
+            <div id="visualizacaoPorPeriodo" style="width:900px; height:400px;"></div>
+        </div>
+        <div id="tabs-2">
+            <div id="visualizacaoDeVelocidadeMedia" style="width:900px; height:400px;"></div>
+        </div>
+        <div id="tabs-3">
+            <div id="visualizacaoAcumulada" style="width:900px; height:400px;"></div>
+        </div>
+    </div>
+    
+@section scripts
+{
+    <script>
+        $(function () {
+            $("#tabs").tabs();
+        });
+	</script>
+    
+    @Scripts.Render("~/Scripts/dygraph-combined.js")
+
+    <script type="text/javascript">
+        visualizacaoPorPeriodo = new Dygraph(
+            document.getElementById("visualizacaoPorPeriodo"),
+            @Html.Raw(ViewBag.SeriePorPeriodo),
+            {
+                title: 'Processamento por Período',
+                fillGraph: true, 
+                strokeWidth: 2,
+                labelsDivStyles:
+                {
+                    'backgroundColor': 'transparent'
+                },
+                xAxisLabelWidth: 70,
+                includeZero: true,
+                labelsDivWidth: 150,
+                labelsSeparateLines: true
+            }
+        );
+        
+        visualizacaoDeVelocidadeMedia = new Dygraph(
+            document.getElementById("visualizacaoDeVelocidadeMedia"),
+            @Html.Raw(ViewBag.SerieVelocidadeMedia),
+            {
+                title: 'Velocidade Média de Processamento',
+                fillGraph: true, 
+                strokeWidth: 2,
+                labelsDivStyles:
+                {
+                    'backgroundColor': 'transparent'
+                },
+                xAxisLabelWidth: 70,
+                includeZero: true,
+                labelsDivWidth: 150,
+                labelsSeparateLines: true
+            }
+        );
+        
+        visualizacaoAcumulada = new Dygraph(
+            document.getElementById("visualizacaoAcumulada"),
+            @Html.Raw(ViewBag.SerieAcumulada),
+            {
+                title: 'Processamento Acumulado',
+                fillGraph: true, 
+                strokeWidth: 2,
+                labelsDivStyles:
+                {
+                    'backgroundColor': 'transparent'
+                },
+                xAxisLabelWidth: 70,
+                includeZero: true,
+                labelsDivWidth: 150,
+                labelsSeparateLines: true
+            }
+        );
+    </script>
+}
+    
+}

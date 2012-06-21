@@ -13,14 +13,12 @@ namespace FatureJa.Negocio.Armazenamento
             Nome = "EventosDeProcessamento";
         }
 
-        public List<EventoDeProcessamento> ObterUltimosEventos(Guid processamentoId, int take)
+        public List<EventoDeProcessamento> ObterEventos(Guid processamentoId)
         {
             TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
-            CloudTableQuery<EventoDeProcessamento> query =
-                (from e in serviceContext.CreateQuery<EventoDeProcessamento>(Nome)
-                 where e.PartitionKey == processamentoId.ToString()
-                 select e).Take(take).AsTableServiceQuery();
-            return query.ToList();
+            return (from e in serviceContext.CreateQuery<EventoDeProcessamento>(Nome)
+                    where e.PartitionKey == processamentoId.ToString()
+                    select e).AsTableServiceQuery().ToList();
         }
     }
 }

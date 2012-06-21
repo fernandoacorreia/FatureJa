@@ -1,6 +1,4 @@
-﻿Definir a retry policy do TableServiceContext
-
-Ver se diminui a contenção particionando os contratos por um módulo em vez de divisão
+﻿Testar novamente: gerar movimento e gerar faturamento.
 
 Criar uma visualização da variação da velocidade média com 2 séries: desde o início e nos últimos 60 segundos
 
@@ -33,3 +31,7 @@ Otimizar:
 Ver o que acontece se mandar gerar contratos após já ter gerado. Idealmente deveria ajustar os números de início e fim.
 
 Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens
+
+Recuperar-se do erro System.Data.Services.Client.DataServiceRequestException: An error occurred while processing this request. ---> System.Data.Services.Client.DataServiceClientException: "The specified entity already exists".
+
+Idempotência das mensagens.
