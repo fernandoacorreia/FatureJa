@@ -1,5 +1,9 @@
 ﻿Definir a retry policy do TableServiceContext
 
+Ver se diminui a contenção particionando os contratos por um módulo em vez de divisão
+
+Criar uma visualização da variação da velocidade média com 2 séries: desde o início e nos últimos 60 segundos
+
 Ajustar a página inicial
 
 Logotipo

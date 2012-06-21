@@ -21,7 +21,7 @@ namespace FatureJa.Negocio.Mensagens
 
         private static IEnumerable<CloudQueueMessage> ObterMensagens(CloudQueue fila)
         {
-            TimeSpan tempoDeInvisibilidade = TimeSpan.FromSeconds(180);
+            TimeSpan tempoDeInvisibilidade = TimeSpan.FromMinutes(10); // um valor bem alto para não interferir nos testes
 
             while (true)
             {

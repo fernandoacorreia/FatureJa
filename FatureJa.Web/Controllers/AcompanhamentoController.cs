@@ -49,7 +49,7 @@ namespace FatureJa.Web.Controllers
             ViewBag.Message = String.Format("{0} {1}", processamento.Comando, processamento.Parametros);
 
             var repositorio = new RepositorioDeEventosDeProcessamento();
-            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 1000);
+            List<EventoDeProcessamento> eventos = repositorio.ObterUltimosEventos(processamentoId, 10000);
 
             if (eventos.Count == 0)
             {
