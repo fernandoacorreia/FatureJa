@@ -1,12 +1,18 @@
-﻿Ajustar a página inicial
+﻿NECESSÁRIO
+----------
 
-Logotipo
+Ajustar textos na página inicial.
 
-Link para projeto no rodapé de copyright
+Criar diagrama de estrutura
+
+Criar apresentação
+
+DESEJÁVEL
+---------
 
 Refactor: Converter tabelas em repositórios com classe base.
 
-Documentar estrutura
+Anotar fonte com documentações
 
 TODO: SÉRIE, NÚMERO DA FATURA
 
