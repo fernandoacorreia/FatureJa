@@ -1,6 +1,4 @@
-﻿Testar novamente: gerar movimento e gerar faturamento.
-
-Ajustar a página inicial
+﻿Ajustar a página inicial
 
 Logotipo
 
@@ -12,20 +10,6 @@ Documentar estrutura
 
 TODO: SÉRIE, NÚMERO DA FATURA
 
-Otimizar:
-
-    https://www.windowsazure.com/en-us/develop/net/how-to-guides/table-services/#retrieve-all-entities
-
-    http://blogs.msdn.com/b/windowsazurestorage/archive/2010/06/25/nagle-s-algorithm-is-not-friendly-towards-small-requests.aspx
-
-    http://social.technet.microsoft.com/Forums/en-US/windowsazuredata/thread/d84ba34b-b0e0-4961-a167-bbe7618beb83
-  
-    Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
-    
-    Usar ResolveType para aumentar velocidade das consultas.
-        http://windowsclient.net/blogs/anshulee/archive/2010/05/27/best-practices-for-ado-net-dataservices-when-using-azure-table-storage.aspx
-        http://shatzicode.wordpress.com/2011/07/13/azure-table-storage-before-you-start/
-
 Ver o que acontece se mandar gerar contratos após já ter gerado. Idealmente deveria ajustar os números de início e fim.
 
 Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens
@@ -33,3 +17,11 @@ Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens
 Recuperar-se do erro System.Data.Services.Client.DataServiceRequestException: An error occurred while processing this request. ---> System.Data.Services.Client.DataServiceClientException: "The specified entity already exists".
 
 Idempotência das mensagens.
+    Set Context.IgnoreResourceNotFoundException = true –  a query that check if an entity exists will throw an exception if the query return no rows. Note that every exception is a performance hit and you will not be able to use SingleOrDefault(). setting this property to true will solve this issue.
+    http://shatzicode.wordpress.com/2011/07/13/azure-table-storage-before-you-start/
+
+Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
+
+Estudar técnicas de otimização
+    http://blogs.msdn.com/b/windowsazurestorage/archive/2010/11/06/how-to-get-most-out-of-windows-azure-tables.aspx
+    http://blogs.msdn.com/b/windowsazurestorage/archive/2010/05/10/windows-azure-storage-abstractions-and-their-scalability-targets.aspx
