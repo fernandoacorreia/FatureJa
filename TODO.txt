@@ -1,18 +1,11 @@
 ﻿NECESSÁRIO
 ----------
 
-Ajustar textos na página inicial.
+Converter TODO em issues.
 
-Criar diagrama de estrutura
-
-Criar apresentação
 
 DESEJÁVEL
 ---------
-
-Refactor: Converter tabelas em repositórios com classe base.
-
-Anotar fonte com documentações
 
 TODO: SÉRIE, NÚMERO DA FATURA
 
@@ -20,7 +13,8 @@ Ver o que acontece se mandar gerar contratos após já ter gerado. Idealmente de
 
 Consulta: digitar contrato, mostrar itens, movimento, fatura e seus itens
 
-Recuperar-se do erro System.Data.Services.Client.DataServiceRequestException: An error occurred while processing this request. ---> System.Data.Services.Client.DataServiceClientException: "The specified entity already exists".
+capacidade de executar novamente a mensagem em caso de erro
+    Recuperar-se do erro System.Data.Services.Client.DataServiceRequestException: An error occurred while processing this request. ---> System.Data.Services.Client.DataServiceClientException: "The specified entity already exists".
 
 Idempotência das mensagens.
     Set Context.IgnoreResourceNotFoundException = true –  a query that check if an entity exists will throw an exception if the query return no rows. Note that every exception is a performance hit and you will not be able to use SingleOrDefault(). setting this property to true will solve this issue.
@@ -31,3 +25,5 @@ Otimizar faturamento: ler todos contratos de um grupo de uma só vez.
 Estudar técnicas de otimização
     http://blogs.msdn.com/b/windowsazurestorage/archive/2010/11/06/how-to-get-most-out-of-windows-azure-tables.aspx
     http://blogs.msdn.com/b/windowsazurestorage/archive/2010/05/10/windows-azure-storage-abstractions-and-their-scalability-targets.aspx
+
+Eliminar mensagem "A first chance exception of type 'System.TypeInitializationException' occurred in FatureJa.Negocio.dll" durante os testes.

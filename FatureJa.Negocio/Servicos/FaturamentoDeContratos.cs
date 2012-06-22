@@ -11,7 +11,8 @@ namespace FatureJa.Negocio.Servicos
     {
         public void SolicitarFaturamento(int ano, int mes)
         {
-            int ultimoContrato = TabelaDeContratos.ObterNumeroDoUltimoContrato();
+            var repositorioDeContratos = new RepositorioDeContratos();
+            int ultimoContrato = repositorioDeContratos.ObterNumeroDoUltimoContrato();
             if (ultimoContrato == 0)
             {
                 Trace.TraceWarning("Não foi encontrado nenhum contrato.");

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Services.Client;
 using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Entidades;
 using FatureJa.Negocio.Util;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
@@ -60,6 +58,7 @@ namespace FatureJa.Negocio.Mensagens
                                         Comando = "GerarLoteDeContratos",
                                         Inicio = dataHoraInicio,
                                         Termino = DateTime.UtcNow,
+                                        Duracao = (DateTime.UtcNow - dataHoraInicio).TotalSeconds,
                                         Quantidade = fim - inicio + 1
                                     });
         }
@@ -68,32 +67,29 @@ namespace FatureJa.Negocio.Mensagens
         {
             Trace.TraceInformation(String.Format("Gerando contratos de {0} a {1} no grupo {2}.", inicio, fim, grupo));
 
-            CloudTableClient clienteContratos = TabelaDeContratos.GetCloudTableClient();
-            TableServiceContext contextoContratos = clienteContratos.GetDataServiceContext();
-
-            CloudTableClient clienteItensDeContrato = TabelaDeItensDeContrato.GetCloudTableClient();
+            var repositorioDeContratos = new RepositorioDeContratos();
 
             int quantidadeNoLote = 0;
             for (int atual = inicio; atual <= fim; atual++)
             {
                 // incluir contratos
                 Contrato contrato = NovoContrato(atual);
-                contextoContratos.AddObject(TabelaDeContratos.Nome, contrato);
+                repositorioDeContratos.AdicionarObjeto(contrato);
                 quantidadeNoLote += 1;
                 if (quantidadeNoLote == 100 || atual == fim)
                 {
-                    contextoContratos.SaveChangesWithRetries(SaveChangesOptions.Batch);
-                    contextoContratos = clienteContratos.GetDataServiceContext();
+                    repositorioDeContratos.SalvarLote();
+                    repositorioDeContratos.CriarNovoContexto();
                     quantidadeNoLote = 0;
                 }
 
                 // incluir itens de contrato
-                TableServiceContext contextoItensDeContrato = clienteItensDeContrato.GetDataServiceContext();
+                var repositorioDeItensDeContrato = new RepositorioDeItensDeContrato();
                 foreach (ItemDeContrato item in NovosItensDeContrato(atual))
                 {
-                    contextoItensDeContrato.AddObject(TabelaDeItensDeContrato.Nome, item);
+                    repositorioDeItensDeContrato.AdicionarObjeto(item);
                 }
-                contextoItensDeContrato.SaveChangesWithRetries(SaveChangesOptions.Batch);
+                repositorioDeItensDeContrato.SalvarLote();
             }
         }
 

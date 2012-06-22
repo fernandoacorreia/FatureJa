@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Services.Client;
 using System.Diagnostics;
 using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Entidades;
 using FatureJa.Negocio.Util;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
@@ -60,14 +58,15 @@ namespace FatureJa.Negocio.Mensagens
         {
             var repositorio = new RepositorioDeEventosDeProcessamento();
             repositorio.Incluir(new EventoDeProcessamento
-            {
-                PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
-                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
-                Comando = "GerarMovimentoParaLoteDeContratos",
-                Inicio = dataHoraInicio,
-                Termino = DateTime.UtcNow,
-                Quantidade = fim - inicio + 1
-            });
+                                    {
+                                        PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
+                                        RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
+                                        Comando = "GerarMovimentoParaLoteDeContratos",
+                                        Inicio = dataHoraInicio,
+                                        Termino = DateTime.UtcNow,
+                                        Duracao = (DateTime.UtcNow - dataHoraInicio).TotalSeconds,
+                                        Quantidade = fim - inicio + 1
+                                    });
         }
 
         private static void GerarMovimentoParaLoteDeContratos(int ano, int mes, int inicio, int fim)
@@ -76,21 +75,20 @@ namespace FatureJa.Negocio.Mensagens
                 String.Format("Gerando movimento para {0}/{1} dos contratos de {2} a {3}.", mes, ano,
                               inicio, fim));
 
-            CloudTableClient clienteMovimento = TabelaDeMovimento.GetCloudTableClient();
             for (int contratoAtual = inicio; contratoAtual <= fim; contratoAtual++)
             {
-                GerarMovimentoParaContrato(ano, mes, contratoAtual, clienteMovimento);
+                GerarMovimentoParaContrato(ano, mes, contratoAtual);
             }
         }
 
-        private static void GerarMovimentoParaContrato(int ano, int mes, int contrato, CloudTableClient clienteMovimento)
+        private static void GerarMovimentoParaContrato(int ano, int mes, int contrato)
         {
-            TableServiceContext contextoMovimento = clienteMovimento.GetDataServiceContext();
+            var repositorioDeMovimento = new RepositorioDeMovimento();
             foreach (Movimento item in NovosItensDeMovimento(ano, mes, contrato))
             {
-                contextoMovimento.AddObject(TabelaDeMovimento.Nome, item);
+                repositorioDeMovimento.AdicionarObjeto(item);
             }
-            contextoMovimento.SaveChangesWithRetries(SaveChangesOptions.Batch);
+            repositorioDeMovimento.SalvarLote();
         }
 
         private static IEnumerable<Movimento> NovosItensDeMovimento(int ano, int mes, int contrato)

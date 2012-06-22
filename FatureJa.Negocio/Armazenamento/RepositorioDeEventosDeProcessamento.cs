@@ -15,10 +15,17 @@ namespace FatureJa.Negocio.Armazenamento
 
         public List<EventoDeProcessamento> ObterEventos(Guid processamentoId)
         {
-            TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
-            return (from e in serviceContext.CreateQuery<EventoDeProcessamento>(Nome)
-                    where e.PartitionKey == processamentoId.ToString()
-                    select e).AsTableServiceQuery().ToList();
+            try
+            {
+                return (from e in ServiceContext.CreateQuery<EventoDeProcessamento>(Nome)
+                        where e.PartitionKey == processamentoId.ToString()
+                        select e).AsTableServiceQuery().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new RepositorioCloudTableException(
+                    String.Format("Erro obtendo eventos do processamento '{0}'.", processamentoId), ex);
+            }
         }
     }
 }

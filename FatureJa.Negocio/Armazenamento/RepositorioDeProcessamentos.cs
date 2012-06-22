@@ -15,19 +15,33 @@ namespace FatureJa.Negocio.Armazenamento
 
         public IEnumerable<Processamento> ObterUltimosProcessamentos(int take)
         {
-            TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
-            return
-                (from p in serviceContext.CreateQuery<Processamento>(Nome)
-                 select p).Take(take).AsTableServiceQuery().ToList();
+            try
+            {
+                return
+                    (from p in ServiceContext.CreateQuery<Processamento>(Nome)
+                     select p).Take(take).AsTableServiceQuery().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new RepositorioCloudTableException(
+                    String.Format("Erro obtendo os {0} últimos processamentos.", take), ex);
+            }
         }
 
         public Processamento ObterPorProcessamentoId(Guid processamentoId)
         {
-            TableServiceContext serviceContext = CloudTableClient.GetDataServiceContext();
-            return
-                (from p in serviceContext.CreateQuery<Processamento>(Nome)
-                 where p.ProcessamentoId == processamentoId
-                 select p).FirstOrDefault();
+            try
+            {
+                return
+                    (from p in ServiceContext.CreateQuery<Processamento>(Nome)
+                     where p.ProcessamentoId == processamentoId
+                     select p).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw new RepositorioCloudTableException(
+                    String.Format("Erro obtendo o processamento '{0}'.", processamentoId), ex);
+            }
         }
     }
 }

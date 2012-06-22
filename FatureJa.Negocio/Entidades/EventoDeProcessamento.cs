@@ -13,6 +13,8 @@ namespace FatureJa.Negocio.Entidades
 
         public int Quantidade { get; set; }
 
+        public double Duracao { get; set; }
+
         public static string ObterPartitionKey(Guid processamentoId)
         {
             return processamentoId.ToString();

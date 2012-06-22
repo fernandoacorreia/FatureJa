@@ -15,7 +15,7 @@
 }
 else
 {
-    <div id="tabs">
+    <div id="tabs" style="display: none;">
         <ul>
             <li><a href="#tabs-1">Por período</a></li>
             <li><a href="#tabs-2">Velocidade média</a></li>
@@ -38,6 +38,7 @@ else
         $(function () {
             $("#tabs").tabs();
         });
+        $("#tabs").show();
 	</script>
     
     @Scripts.Render("~/Scripts/dygraph-combined.js")

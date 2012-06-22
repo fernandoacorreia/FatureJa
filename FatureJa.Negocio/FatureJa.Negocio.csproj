@@ -49,12 +49,14 @@
   <ItemGroup>
     <Compile Include="Armazenamento\InicializadorDeArmazenamento.cs" />
     <Compile Include="Armazenamento\RepositorioCloudTable.cs" />
+    <Compile Include="Armazenamento\RepositorioCloudTableException.cs" />
+    <Compile Include="Armazenamento\RepositorioDeContratos.cs" />
     <Compile Include="Armazenamento\RepositorioDeEventosDeProcessamento.cs" />
+    <Compile Include="Armazenamento\RepositorioDeFaturas.cs" />
+    <Compile Include="Armazenamento\RepositorioDeItensDeContrato.cs" />
+    <Compile Include="Armazenamento\RepositorioDeItensDeFatura.cs" />
+    <Compile Include="Armazenamento\RepositorioDeMovimento.cs" />
     <Compile Include="Armazenamento\RepositorioDeProcessamentos.cs" />
-    <Compile Include="Armazenamento\TabelaDeFaturas.cs" />
-    <Compile Include="Armazenamento\TabelaDeItensDeContrato.cs" />
-    <Compile Include="Armazenamento\TabelaDeItensDeFatura.cs" />
-    <Compile Include="Armazenamento\TabelaDeMovimento.cs" />
     <Compile Include="Entidades\EventoDeProcessamento.cs" />
     <Compile Include="Entidades\Fatura.cs" />
     <Compile Include="Entidades\ItemDeContrato.cs" />
@@ -74,7 +76,6 @@
     <Compile Include="Servicos\FaturamentoDeContratos.cs" />
     <Compile Include="Servicos\GeradorDeMovimento.cs" />
     <Compile Include="Servicos\GeradorDeContratos.cs" />
-    <Compile Include="Armazenamento\TabelaDeContratos.cs" />
     <Compile Include="Entidades\Contrato.cs" />
     <Compile Include="Infraestrutura\CloudQueueFactory.cs" />
     <Compile Include="Armazenamento\FilaDeMensagens.cs" />

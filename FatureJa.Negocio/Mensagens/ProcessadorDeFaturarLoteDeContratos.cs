@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Services.Client;
 using System.Diagnostics;
-using System.Linq;
 using FatureJa.Negocio.Armazenamento;
 using FatureJa.Negocio.Entidades;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace FatureJa.Negocio.Mensagens
 {
     public class ProcessadorDeFaturarLoteDeContratos
     {
-        private readonly CloudTableClient _clienteContratos = TabelaDeContratos.GetCloudTableClient();
-        private readonly CloudTableClient _clienteFaturas = TabelaDeFaturas.GetCloudTableClient();
-        private readonly CloudTableClient _clienteItensDeContrato = TabelaDeItensDeContrato.GetCloudTableClient();
-        private readonly CloudTableClient _clienteItensDeFatura = TabelaDeItensDeFatura.GetCloudTableClient();
-        private readonly CloudTableClient _clienteMovimento = TabelaDeMovimento.GetCloudTableClient();
+        private readonly RepositorioDeContratos _repositorioDeContratos = new RepositorioDeContratos();
+        private readonly RepositorioDeItensDeContrato _repositorioDeItensDeContrato = new RepositorioDeItensDeContrato();
+        private readonly RepositorioDeMovimento _repositorioDeMovimento = new RepositorioDeMovimento();
 
         public void Processar(dynamic mensagem)
         {
@@ -76,14 +71,15 @@ namespace FatureJa.Negocio.Mensagens
         {
             var repositorio = new RepositorioDeEventosDeProcessamento();
             repositorio.Incluir(new EventoDeProcessamento
-            {
-                PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
-                RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
-                Comando = "FaturarLoteDeContratos",
-                Inicio = dataHoraInicio,
-                Termino = DateTime.UtcNow,
-                Quantidade = fim - inicio + 1
-            });
+                                    {
+                                        PartitionKey = EventoDeProcessamento.ObterPartitionKey(processamentoId),
+                                        RowKey = EventoDeProcessamento.ObterRowKey(dataHoraInicio, Guid.NewGuid()),
+                                        Comando = "FaturarLoteDeContratos",
+                                        Inicio = dataHoraInicio,
+                                        Termino = DateTime.UtcNow,
+                                        Duracao = (DateTime.UtcNow - dataHoraInicio).TotalSeconds,
+                                        Quantidade = fim - inicio + 1
+                                    });
         }
 
         private void FaturarLoteDeContratos(int ano, int mes, int inicio, int fim, int grupo)
@@ -100,64 +96,17 @@ namespace FatureJa.Negocio.Mensagens
 
         private void FaturarContrato(int ano, int mes, int atual)
         {
-            Contrato contrato = ObterContrato(atual);
+            Contrato contrato = _repositorioDeContratos.ObterContrato(atual);
             if (contrato == null)
             {
                 Trace.TraceError(String.Format("O contrato {0} não foi encontrado.", atual));
                 return;
             }
 
-            IEnumerable<ItemDeContrato> itensDoContrato = ObterItensDoContrato(atual);
-            IEnumerable<Movimento> movimentoDoContrato = ObterMovimentoDoContrato(ano, mes, atual);
+            IEnumerable<ItemDeContrato> itensDoContrato = _repositorioDeItensDeContrato.ObterItensDoContrato(atual);
+            IEnumerable<Movimento> movimentoDoContrato = _repositorioDeMovimento.ObterMovimentoDoContrato(ano, mes,
+                                                                                                          atual);
             GerarFaturamento(ano, mes, contrato, itensDoContrato, movimentoDoContrato);
-        }
-
-        private Contrato ObterContrato(int atual)
-        {
-            TableServiceContext serviceContext = _clienteContratos.GetDataServiceContext();
-            Contrato contrato =
-                (from e in serviceContext.CreateQuery<Contrato>(TabelaDeContratos.Nome)
-                 where e.PartitionKey == Contrato.ObterPartitionKey(atual) && e.RowKey == Contrato.ObterRowKey(atual)
-                 select e).FirstOrDefault();
-            return contrato;
-        }
-
-        private IEnumerable<ItemDeContrato> ObterItensDoContrato(int atual)
-        {
-            TableServiceContext serviceContext = _clienteItensDeContrato.GetDataServiceContext();
-
-            string partitionKey = Contrato.ObterPartitionKey(atual);
-            string rowKeyInicial = ItemDeContrato.ObterRowKey(atual, 0);
-            string rowKeyFinal = ItemDeContrato.ObterRowKey(atual, int.MaxValue);
-
-            CloudTableQuery<ItemDeContrato> query =
-                (from e in serviceContext.CreateQuery<ItemDeContrato>(TabelaDeItensDeContrato.Nome)
-                 where
-                     e.PartitionKey == partitionKey &&
-                     e.RowKey.CompareTo(rowKeyInicial) >= 0 &&
-                     e.RowKey.CompareTo(rowKeyFinal) <= 0
-                 select e).AsTableServiceQuery<ItemDeContrato>();
-
-            return query.ToList();
-        }
-
-        private IEnumerable<Movimento> ObterMovimentoDoContrato(int ano, int mes, int atual)
-        {
-            TableServiceContext serviceContext = _clienteMovimento.GetDataServiceContext();
-
-            string partitionKey = Movimento.ObterPartitionKey(ano, mes);
-            string rowKeyInicial = Movimento.ObterRowKey(atual, 0);
-            string rowKeyFinal = Movimento.ObterRowKey(atual, int.MaxValue);
-
-            CloudTableQuery<Movimento> query =
-                (from e in serviceContext.CreateQuery<Movimento>(TabelaDeMovimento.Nome)
-                 where
-                     e.PartitionKey == partitionKey &&
-                     e.RowKey.CompareTo(rowKeyInicial) >= 0 &&
-                     e.RowKey.CompareTo(rowKeyFinal) <= 0
-                 select e).AsTableServiceQuery<Movimento>();
-
-            return query.ToList();
         }
 
         private void GerarFaturamento(int ano, int mes, Contrato contrato, IEnumerable<ItemDeContrato> itensDoContrato,
@@ -167,8 +116,9 @@ namespace FatureJa.Negocio.Mensagens
             int TODO_NUMERO_FATURA = contrato.Numero;
             int numeroItemDeFatura = 0;
             double valorTotal = 0;
-            TableServiceContext contextoItensDeFatura = _clienteItensDeFatura.GetDataServiceContext();
-            TableServiceContext contextoDeFaturas = _clienteFaturas.GetDataServiceContext();
+            var repositorioDeFaturas = new RepositorioDeFaturas();
+            var repositorioDeItensDeFatura = new RepositorioDeItensDeFatura();
+
 
             // incluir itens de contrato
             foreach (ItemDeContrato itemDeContrato in itensDoContrato)
@@ -186,7 +136,7 @@ namespace FatureJa.Negocio.Mensagens
                                            ValorTotal = itemDeContrato.Valor
                                        };
                 valorTotal += itemDeFatura.ValorTotal;
-                contextoItensDeFatura.AddObject(TabelaDeItensDeFatura.Nome, itemDeFatura);
+                repositorioDeItensDeFatura.AdicionarObjeto(itemDeFatura);
             }
 
             // incluir itens de movimento
@@ -205,7 +155,7 @@ namespace FatureJa.Negocio.Mensagens
                                            ValorTotal = movimento.ValorTotal
                                        };
                 valorTotal += itemDeFatura.ValorTotal;
-                contextoItensDeFatura.AddObject(TabelaDeItensDeFatura.Nome, itemDeFatura);
+                repositorioDeItensDeFatura.AdicionarObjeto(itemDeFatura);
             }
 
             // incluir registro mestre da fatura
@@ -221,11 +171,11 @@ namespace FatureJa.Negocio.Mensagens
                                  UfDoCliente = contrato.UfDoCliente,
                                  ValorTotal = valorTotal
                              };
-            contextoDeFaturas.AddObject(TabelaDeFaturas.Nome, fatura);
+            repositorioDeFaturas.AdicionarObjeto(fatura);
 
             // salvar
-            contextoItensDeFatura.SaveChangesWithRetries(SaveChangesOptions.Batch);
-            contextoDeFaturas.SaveChangesWithRetries(SaveChangesOptions.Batch);
+            repositorioDeItensDeFatura.SalvarLote();
+            repositorioDeFaturas.SalvarLote();
         }
     }
 }

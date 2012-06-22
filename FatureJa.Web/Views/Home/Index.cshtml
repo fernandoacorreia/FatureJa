@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Início";
+    ViewBag.Title = "FatureJa";
 }
 @section featured {
     <section class="featured">
@@ -8,7 +8,7 @@
                 <h1>@ViewBag.Title.</h1>
                 <h2>@ViewBag.Message</h2>
             </hgroup>
-            <p>Esta aplicação demonstra técnicas para processamento paralelo com Windows Azure.</p>
+            <p>Exemplo de arquitetura para processamento paralelo no Windows Azure.</p>
         </div>
     </section>
 }
@@ -16,19 +16,15 @@
 <ol class="round">
     <li class="one">
         <h5>Gerar dados de exemplo</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards. <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn
-            more</a></li>
+        Gere uma massa de @Html.ActionLink("contratos", "GerarContratos", "Administracao") e seu respectivo @Html.ActionLink("movimento", "GerarMovimento", "Administracao") mensal.
+    </li>
     <li class="two">
         <h5>Iniciar processo de faturamento</h5>
-        NuGet makes it easy to install and update free libraries and tools. <a href="http://go.microsoft.com/fwlink/?LinkId=245153">
-            Learn more</a></li>
+        Comande o início do processo de @Html.ActionLink("faturamento", "Index", "Faturamento") para um mês que tenha movimento.
+    </li>
     <li class="three">
         <h5>Acompanhar andamento do processo</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications. <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn
-            more</a></li>
+        @Html.ActionLink("Acompanhe", "Index", "Acompanhamento") o progresso do processamento.
+    </li>
 </ol>
+<p>Você precisa ter o perfil Administrador para comandar processamentos. O acompanhamento do andamento é público.</p>

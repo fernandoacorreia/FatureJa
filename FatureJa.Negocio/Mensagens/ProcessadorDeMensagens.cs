@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using FatureJa.Negocio.Armazenamento;
-using FatureJa.Negocio.Util;
 using Microsoft.WindowsAzure.StorageClient;
 using Newtonsoft.Json;
 
@@ -21,7 +20,8 @@ namespace FatureJa.Negocio.Mensagens
 
         private static IEnumerable<CloudQueueMessage> ObterMensagens(CloudQueue fila)
         {
-            TimeSpan tempoDeInvisibilidade = TimeSpan.FromMinutes(10); // um valor bem alto para não interferir nos testes
+            TimeSpan tempoDeInvisibilidade = TimeSpan.FromMinutes(60);
+                // um valor bem alto para não interferir nos testes
 
             while (true)
             {
@@ -48,28 +48,36 @@ namespace FatureJa.Negocio.Mensagens
                     Trace.TraceError(
                         String.Format("A mensagem não pôde ser processada após várias tentativas: '{0}'.",
                                       mensagem.AsString));
+                    return;
                 }
-                else
+
+                var mensagemDeserializada = JsonConvert.DeserializeObject<dynamic>(mensagem.AsString);
+                if (mensagemDeserializada == null)
                 {
-                    var mensagemDeserializada = JsonConvert.DeserializeObject<dynamic>(mensagem.AsString);
-                    if (mensagemDeserializada == null)
-                    {
-                        Trace.TraceError(
-                            String.Format(
-                                "A mensagem não é válida; a deserialização resultou em um objeto nulo: '{0}'.",
-                                mensagem.AsString));
-                    }
-                    else
-                    {
-                        new DespachanteDeMensagem().Despachar(mensagemDeserializada);
-                    }
+                    Trace.TraceError(
+                        String.Format(
+                            "A mensagem não é válida; a deserialização resultou em um objeto nulo: '{0}'.",
+                            mensagem.AsString));
+                    return;
                 }
-                fila.DeleteMessage(mensagem);
+
+                new DespachanteDeMensagem().Despachar(mensagemDeserializada);
             }
             catch (Exception ex)
             {
                 Trace.TraceError(
-                    String.Format("Erro no processamento da mensagem '{0}': '{1}'.", mensagem.AsString, ex.ToString()));
+                    String.Format("Erro no processamento da mensagem '{0}': '{1}'.", mensagem.AsString, ex));
+            }
+            finally
+            {
+                try
+                {
+                    fila.DeleteMessage(mensagem); // exclui a mensagem mesmo se houve uma exceção no seu processamento
+                }
+                catch (Exception ex)
+                {
+                    Trace.TraceError(String.Format("Erro excluindo mensagem '{0}': '{1}'.", mensagem.AsString, ex));
+                }
             }
         }
     }
