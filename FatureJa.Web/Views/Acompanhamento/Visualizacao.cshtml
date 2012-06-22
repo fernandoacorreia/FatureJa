@@ -34,14 +34,13 @@ else
     
 @section scripts
 {
+    @Scripts.Render("~/Scripts/dygraph-combined.js")
     <script>
         $(function () {
             $("#tabs").tabs();
         });
         $("#tabs").show();
-	</script>
-    
-    @Scripts.Render("~/Scripts/dygraph-combined.js")
+    </script>
 
     <script type="text/javascript">
         visualizacaoPorPeriodo = new Dygraph(
